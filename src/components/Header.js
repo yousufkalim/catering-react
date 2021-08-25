@@ -9,7 +9,7 @@ import Typography from "@material-ui/core/Typography";
 // Styles
 const useStyles = makeStyles({
   appBar: {
-    color: "black",
+    color: "white",
     backgroundColor: "transparent",
     boxShadow: "none",
   },
@@ -33,7 +33,11 @@ const Header = () => {
   const { pathname } = useLocation();
 
   return (
-    <AppBar position="static" className={classes.appBar}>
+    <AppBar
+      position="static"
+      className={classes.appBar}
+      style={pathname === "/register" ? { color: "black" } : {}}
+    >
       <Toolbar>
         <Typography variant="h6" className={classes.title}>
           H-CATERING

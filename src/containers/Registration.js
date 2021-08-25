@@ -6,7 +6,7 @@ import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 
 // Home Component
-export default function VendorRegistration() {
+export default function Registration() {
   return (
     <div>
       <Header />

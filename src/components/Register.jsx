@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import Joi from "joi-browser";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Radio from "@material-ui/core/Radio";
@@ -47,6 +48,8 @@ const useStyles = makeStyles({
 
 const Register = () => {
   const classes = useStyles();
+  const [errors, setErrors] = useState({});
+  const [registerData, setRegisterData] = useState({});
 
   const renderInput = (type, name, placeholder) => {
     return (
@@ -99,6 +102,28 @@ const Register = () => {
       />
     );
   };
+
+  // const handleChange = ({ target }) => {
+  //   const { name, value } = target;
+  //   const allErrors = { ...errors };
+  //   const errorMessage = validateProperty(name, value);
+  //   if (errorMessage) allErrors[name] = errorMessage;
+  //   else delete allErrors[name];
+  //   setErrors(allErrors);
+
+  //   const formData = { ...registerData };
+  //   formData[name] = value;
+  //   setRegisterData(formData);
+  // };
+
+  // const validateProperty = (name, value) => {
+  // const obj = { [name]: value };
+  // // const schema = {
+  // //   [name]: formType === "signup" ? registerSchema[name] : loginSchema[name],
+  // // };
+  // // const { error } = Joi.validate(obj, schema);
+  // return error ? error.details[0].message : null;
+  // };
 
   return (
     <div className={classes.main}>
