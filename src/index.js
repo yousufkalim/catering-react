@@ -5,6 +5,7 @@ import App from "./App";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { BrowserRouter } from "react-router-dom";
 import { StoreProvider } from "./StoreContext";
+import "@fontsource/roboto";
 
 // Rendering DOM
 ReactDOM.render(
