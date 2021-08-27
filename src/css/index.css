@@ -1,6 +1,13 @@
 /* Importing all CSS files */
 @import url("./Header.css");
 
+/* Importing Fonts */
+@font-face {
+  font-family: "TektonPro";
+  src: local("TektonPro"),
+    url("../assets/fonts/TektonPro-Bold.otf") format("truetype");
+}
+
 /* Defaults */
 * {
   padding: 0;
