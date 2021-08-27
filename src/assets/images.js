@@ -5,6 +5,8 @@ import CashIcon from "./images/cashIcon.png";
 import DeliveryIcon from "./images/deliveryIcon.png";
 import MaxPeopleIcon from "./images/maxPeopleIcon.png";
 import RatingIcon from "./images/ratingIcon.png";
+import NextIcon from "./images/nextIcon.png";
+import PrevIcon from "./images/prevIcon.png";
 
 export {
   SliderImage1,
@@ -14,4 +16,6 @@ export {
   DeliveryIcon,
   MaxPeopleIcon,
   RatingIcon,
+  NextIcon,
+  PrevIcon,
 };
