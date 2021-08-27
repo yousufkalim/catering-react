@@ -1,6 +1,6 @@
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
-import { SliderImage1 } from "../assets/images";
+import { SliderImage1, SliderImage2 } from "../assets/images";
 
 const Slider = () => {
   return (
@@ -16,10 +16,10 @@ const Slider = () => {
       showIndicators={false}
     >
       <div>
-        <img src={SliderImage1} alt="img1" />
+        <img src={SliderImage1} alt="img1" style={{ height: "60vh" }} />
       </div>
       <div>
-        <img src={SliderImage1} alt="img1" />
+        <img src={SliderImage2} alt="img1" style={{ height: "60vh" }} />
       </div>
     </Carousel>
   );
