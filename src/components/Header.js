@@ -12,6 +12,7 @@ const useStyles = makeStyles({
     color: "white",
     backgroundColor: "transparent",
     boxShadow: "none",
+    width: "100%",
   },
   menuButton: { marginRight: "auto" },
   title: {
@@ -23,7 +24,8 @@ const useStyles = makeStyles({
     fontFamily: "Roboto",
     fontSize: "18px",
     textDecoration: "none",
-    color: "black",
+    color: "white",
+    marginLeft: "auto",
   },
 });
 
