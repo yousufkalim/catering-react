@@ -33,7 +33,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Slider = () => {
+const Slider = ({ name }) => {
   const classes = useStyles();
 
   return (
@@ -94,7 +94,7 @@ const Slider = () => {
       </Carousel>
 
       <div className={classes.headingDiv}>
-        <Typography variant="h3">Le Bolly Bolly</Typography>
+        <Typography variant="h3">{name}</Typography>
       </div>
     </div>
   );

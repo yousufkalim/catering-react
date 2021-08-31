@@ -68,7 +68,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Profile = () => {
+const Profile = ({ vendor, handleMenuOpen }) => {
   const classes = useStyles();
 
   return (
@@ -78,7 +78,7 @@ const Profile = () => {
           <div className={classes.iconDiv}>
             <img src={AddressIcon} alt="address" width="65px" />
             <Typography variant="body1" className={classes.iconText}>
-              Address
+              {vendor?.address?.label}
             </Typography>
           </div>
           <div className={classes.iconDiv}>
@@ -89,25 +89,25 @@ const Profile = () => {
               style={{ marginTop: "7px" }}
             />
             <Typography variant="body1" className={classes.iconText}>
-              20 Miles
+              {vendor.delivery_radius} Miles
             </Typography>
           </div>
           <div className={classes.iconDiv}>
             <img src={MaxPeopleIcon} alt="address" width="82px" />
             <Typography variant="body1" className={classes.iconText}>
-              Max 30 People
+              Max {vendor.max_people_limit} People
             </Typography>
           </div>
           <div className={classes.iconDiv}>
             <img src={CashIcon} alt="address" width="79px" />
             <Typography variant="body1" className={classes.iconText}>
-              $$$$
+              {vendor.price}$
             </Typography>
           </div>
           <div className={classes.iconDiv}>
             <img src={RatingIcon} alt="address" width="89px" />
             <Typography variant="body1" className={classes.iconText}>
-              4.1 (32 reviews)
+              {vendor.final_rating} ({vendor?.ratings?.length} reviews)
             </Typography>
           </div>
         </div>
@@ -118,11 +118,7 @@ const Profile = () => {
           </Typography>
           <hr className={classes.hr} />
           <Typography variant="body1" className={classes.text}>
-            Le Bolly-Bolly is a restaurant which is serving a lot of different
-            varieties of food : <br /> Kabob, salads, sandwiches.
-            <br />
-            <br />
-            Please feel free to join us for your catering events.
+            {vendor.description}
           </Typography>
         </div>
 
@@ -131,7 +127,11 @@ const Profile = () => {
             <b>Menu</b>
           </Typography>
           <hr className={classes.hr} />
-          <Button variant="contained" className={classes.btn}>
+          <Button
+            variant="contained"
+            className={classes.btn}
+            onClick={handleMenuOpen}
+          >
             See the menu
           </Button>
         </div>
@@ -141,6 +141,11 @@ const Profile = () => {
             <b>Website and Social medias</b>
           </Typography>
           <hr className={classes.hr} />
+          <Typography variant="body1" className={classes.text}>
+            {vendor.website} <br />
+            {vendor.facebook_page} <br />
+            {vendor.instagram_page} <br />
+          </Typography>
         </div>
       </Container>
     </>
