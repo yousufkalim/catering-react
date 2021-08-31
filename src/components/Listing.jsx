@@ -6,6 +6,7 @@ import { HeroImg, MapImg } from "../assets/images";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import CatererCard from "./CatererCard";
+import { TileLayer, Marker, Popup, Map } from "react-leaflet";
 
 // Styles
 const useStyles = makeStyles({
@@ -49,7 +50,11 @@ const useStyles = makeStyles({
     height: "600px",
     overflowY: "scroll",
   },
-  mapBox: { height: "600px", width: "100%", overflow: "hidden" },
+  mapBox: {
+    height: "600px",
+    width: "100%",
+    overflow: "hidden",
+  },
   cateringArea: { height: "600px" },
 });
 
@@ -92,12 +97,23 @@ const Listing = () => {
             </Grid>
           </Grid>
         </Grid>
-        <Grid item xs={12} sm={7} clasName={classes.mapBox}>
-          <img
-            src={MapImg}
-            alt="map"
-            style={{ height: "600px", width: "100%" }}
-          />
+        <Grid
+          item
+          xs={12}
+          sm={7}
+          style={{ height: "600px", width: "100%", overflow: "hidden" }}
+        >
+          <Map center={[46.2276, 2.2137]} zoom={13} scrollWheelZoom={true}>
+            <TileLayer
+              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <Marker position={[46.2276, 2.2137]}>
+              <Popup>
+                A pretty CSS3 popup. <br /> Easily customizable.
+              </Popup>
+            </Marker>
+          </Map>
         </Grid>
       </Grid>
     </div>
