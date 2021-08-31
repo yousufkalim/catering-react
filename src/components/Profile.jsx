@@ -59,6 +59,7 @@ const useStyles = makeStyles({
     marginTop: "20px",
     color: "white",
     maxHeight: "38px",
+    borderRadius: "10px",
     backgroundColor: "black",
     "&:hover": {
       color: "white",

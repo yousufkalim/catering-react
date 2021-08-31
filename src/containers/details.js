@@ -13,7 +13,6 @@ const useStyles = makeStyles({
   container: { position: "relative" },
   header: { position: "absolute", top: 0, zIndex: 1000 },
   slider: {
-    height: "400px",
     overflow: "hidden",
   },
 });

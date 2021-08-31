@@ -7,6 +7,8 @@ import MaxPeopleIcon from "./images/maxPeopleIcon.png";
 import RatingIcon from "./images/ratingIcon.png";
 import NextIcon from "./images/nextIcon.png";
 import PrevIcon from "./images/prevIcon.png";
+import HeroImg from "./images/heroImg.png";
+import MapImg from "./images/mapImg.png";
 
 export {
   SliderImage1,
@@ -18,4 +20,6 @@ export {
   RatingIcon,
   NextIcon,
   PrevIcon,
+  HeroImg,
+  MapImg,
 };

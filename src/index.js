@@ -6,6 +6,7 @@ import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import { BrowserRouter } from "react-router-dom";
 import { StoreProvider } from "./StoreContext";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
+import "leaflet/dist/leaflet.css";
 import "@fontsource/roboto";
 
 // Rendering DOM

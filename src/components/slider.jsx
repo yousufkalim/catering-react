@@ -1,5 +1,7 @@
 import React from "react";
 import { Carousel } from "react-responsive-carousel";
+import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
 import {
   SliderImage1,
   SliderImage2,
@@ -7,71 +9,94 @@ import {
   PrevIcon,
 } from "../assets/images";
 
-const arrowStyles = {
-  position: "absolute",
-  zIndex: 5,
-  top: "calc(50% - 15px)",
-  width: 30,
-  height: 30,
-  cursor: "pointer",
-  background: "none",
-  border: "none",
-};
+const useStyles = makeStyles({
+  img: { width: "100%", height: "80vh", objectFit: "cover" },
+  container: { position: "relative" },
+  arrows: {
+    position: "absolute",
+    zIndex: 5,
+    top: "calc(50% - 15px)",
+    width: 30,
+    height: 30,
+    cursor: "pointer",
+    background: "none",
+    border: "none",
+  },
+  headingDiv: {
+    position: "absolute",
+    bottom: 0,
+    width: "100%",
+    display: "flex",
+    justifyContent: "center",
+    zIndex: "10000",
+    color: "white",
+  },
+});
 
 const Slider = () => {
+  const classes = useStyles();
+
   return (
-    <Carousel
-      infiniteLoop
-      emulateTouch
-      swipeable
-      dynamicHeight
-      stopOnHover
-      autoPlay
-      showThumbs={false}
-      showStatus={false}
-      showIndicators={false}
-      renderArrowPrev={(onClickHandler, hasPrev, label) =>
-        hasPrev && (
-          <button
-            type="button"
-            onClick={onClickHandler}
-            title={label}
-            style={{ ...arrowStyles, left: 15 }}
-          >
-            <img
-              src={PrevIcon}
-              alt="prev"
-              title={label}
+    <div className={classes.container}>
+      <Carousel
+        infiniteLoop
+        emulateTouch
+        swipeable
+        dynamicHeight
+        stopOnHover
+        autoPlay
+        showThumbs={false}
+        showStatus={false}
+        showIndicators={false}
+        renderArrowPrev={(onClickHandler, hasPrev, label) =>
+          hasPrev && (
+            <button
+              type="button"
               onClick={onClickHandler}
-            />
-          </button>
-        )
-      }
-      renderArrowNext={(onClickHandler, hasNext, label) =>
-        hasNext && (
-          <button
-            type="button"
-            onClick={onClickHandler}
-            title={label}
-            style={{ ...arrowStyles, right: 15 }}
-          >
-            <img
-              src={NextIcon}
-              alt="prev"
               title={label}
+              className={classes.arrows}
+              style={{ left: 15 }}
+            >
+              <img
+                src={PrevIcon}
+                alt="prev"
+                title={label}
+                onClick={onClickHandler}
+              />
+            </button>
+          )
+        }
+        renderArrowNext={(onClickHandler, hasNext, label) =>
+          hasNext && (
+            <button
+              type="button"
               onClick={onClickHandler}
-            />
-          </button>
-        )
-      }
-    >
-      <div>
-        <img src={SliderImage1} alt="img1" style={{ height: "60vh" }} />
+              title={label}
+              className={classes.arrows}
+              style={{ right: 15 }}
+            >
+              <img
+                src={NextIcon}
+                alt="prev"
+                title={label}
+                onClick={onClickHandler}
+              />
+            </button>
+          )
+        }
+      >
+        <div>
+          <img src={SliderImage1} alt="img1" className={classes.img} />
+        </div>
+        <div>
+          <img src={SliderImage2} alt="img2" className={classes.img} />
+        </div>
+      </Carousel>
+
+      <div className={classes.headingDiv}>
+        <Typography variant="h3">Le Bolly Bolly</Typography>
       </div>
-      <div>
-        <img src={SliderImage2} alt="img1" style={{ height: "60vh" }} />
-      </div>
-    </Carousel>
+    </div>
   );
 };
 
