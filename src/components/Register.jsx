@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import Joi from "joi-browser";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Radio from "@material-ui/core/Radio";
@@ -32,6 +31,11 @@ const useStyles = makeStyles({
     textAlign: "center",
     "&::placeholder": { textAlign: "center" },
   },
+  inputText: {
+    marginBottom: "20px",
+    color: "red",
+    fontSize: "small",
+  },
   label: { color: "black", fontWeight: "bold", marginBottom: "10px" },
   radioBtns: { marginBottom: "20px" },
   submit: {
@@ -46,19 +50,28 @@ const useStyles = makeStyles({
   },
 });
 
-const Register = () => {
+const Register = ({
+  data,
+  errors,
+  handleChange,
+  handleFoodTypeChange,
+  handleSubmit,
+}) => {
   const classes = useStyles();
-  const [errors, setErrors] = useState({});
-  const [registerData, setRegisterData] = useState({});
 
   const renderInput = (type, name, placeholder) => {
     return (
-      <input
-        type={type}
-        name={name}
-        placeholder={placeholder}
-        className={classes.input}
-      />
+      <>
+        <input
+          type={type}
+          name={name}
+          value={data[name]}
+          placeholder={placeholder}
+          className={classes.input}
+          onChange={handleChange}
+        />
+        {errors[name] && <p className={classes.inputText}>{errors[name]}</p>}
+      </>
     );
   };
 
@@ -71,8 +84,8 @@ const Register = () => {
         <RadioGroup
           name={name}
           color="primary"
-          // value={value}
-          // onChange={handleChange}
+          value={data[name]}
+          onChange={handleChange}
         >
           {data.map((item) => (
             <FormControlLabel
@@ -83,6 +96,7 @@ const Register = () => {
             />
           ))}
         </RadioGroup>
+        {errors[name] && <p className={classes.inputText}>{errors[name]}</p>}
       </FormControl>
     );
   };
@@ -93,7 +107,7 @@ const Register = () => {
         control={
           <Checkbox
             // checked={state.checkedB}
-            // onChange={handleChange}
+            onChange={handleFoodTypeChange}
             name={name}
             color="primary"
           />
@@ -103,28 +117,6 @@ const Register = () => {
     );
   };
 
-  // const handleChange = ({ target }) => {
-  //   const { name, value } = target;
-  //   const allErrors = { ...errors };
-  //   const errorMessage = validateProperty(name, value);
-  //   if (errorMessage) allErrors[name] = errorMessage;
-  //   else delete allErrors[name];
-  //   setErrors(allErrors);
-
-  //   const formData = { ...registerData };
-  //   formData[name] = value;
-  //   setRegisterData(formData);
-  // };
-
-  // const validateProperty = (name, value) => {
-  // const obj = { [name]: value };
-  // // const schema = {
-  // //   [name]: formType === "signup" ? registerSchema[name] : loginSchema[name],
-  // // };
-  // // const { error } = Joi.validate(obj, schema);
-  // return error ? error.details[0].message : null;
-  // };
-
   return (
     <div className={classes.main}>
       <Typography variant="h3">Vendors Registration</Typography>
@@ -133,11 +125,10 @@ const Register = () => {
         Please join our network, and get leads for catering opportunities.
         <br /> We will promote your business to the muslim community.
       </Typography>
-      <form className={classes.form}>
+      <div className={classes.form}>
         {renderInput("text", "company_name", "Name of the company")}
         {renderInput("text", "phone", "Phone Number")}
         {renderInput("email", "email", "E-mail address")}
-        {/* {renderInput("address", "email", "E-mail address")} */}
         {renderInput("text", "website", "Website")}
         {renderInput("text", "facebook_page", "Facebook Page")}
         {renderInput("text", "instagram_page", "Instagram Page")}
@@ -154,11 +145,11 @@ const Register = () => {
           { value: "true", label: "Yes" },
           { value: "false", label: "No" },
         ])}
-        {renderRadioBtnWIthLabel("Dine In Options", "is_delivering", [
+        {renderRadioBtnWIthLabel("Dine In Options", "dine_in_options", [
           { value: "true", label: "Yes" },
           { value: "false", label: "No" },
         ])}
-        {renderInput("text", "delivery_radius", "Miles")}
+        {renderInput("number", "delivery_radius", "Miles")}
         <Typography variant="body1">
           <b>Type of food: </b>
         </Typography>
@@ -187,9 +178,13 @@ const Register = () => {
             {renderCheckBox("African", "African")}
           </div>
         </div>
-      </form>
-
-      <button className={classes.submit}>Submit</button>
+        {errors["food_type"] && (
+          <p className={classes.inputText}>{errors["food_type"]}</p>
+        )}
+        <button className={classes.submit} onClick={handleSubmit}>
+          Submit
+        </button>
+      </div>
     </div>
   );
 };

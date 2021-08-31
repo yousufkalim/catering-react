@@ -20,6 +20,9 @@ const useStyles = makeStyles({
     fontFamily: "TektonPro",
     fontSize: "28px",
   },
+  link: {
+    textDecoration: "none",
+  },
   register: {
     fontFamily: "Roboto",
     fontSize: "18px",
@@ -41,11 +44,20 @@ const Header = () => {
       style={pathname === "/register" ? { color: "black" } : {}}
     >
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          H-CATERING
-        </Typography>
+        <Link to="/" className={classes.link}>
+          <Typography
+            variant="h6"
+            className={classes.title}
+            style={
+              pathname !== "/register" ? { color: "white" } : { color: "black" }
+            }
+          >
+            H-CATERING
+          </Typography>
+        </Link>
+
         {pathname === "/" && (
-          <Link to="register" className={classes.register}>
+          <Link to="/register" className={classes.register}>
             Vendors Registration
           </Link>
         )}
