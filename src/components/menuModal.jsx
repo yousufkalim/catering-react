@@ -12,7 +12,11 @@ const MenuModal = ({ menu }) => {
         justifyContent: "center",
       }}
     >
-      <img src={`${baseUrl}/${menu}`} alt="menu" />
+      <img
+        src={`${baseUrl}/${menu}`}
+        alt="menu"
+        style={{ objectFit: "contain" }}
+      />
     </div>
   );
 };

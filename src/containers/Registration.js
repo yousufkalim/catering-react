@@ -1,17 +1,22 @@
 // Init
 import React, { useState } from "react";
+import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
 
 // Importing Components
 import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
+import { toast } from "react-toastify";
 
 // Home Component
 export default function Registration() {
   const [errors, setErrors] = useState({});
   const [registerData, setRegisterData] = useState({});
   const [foodType, setFoodType] = useState([]);
+  const [image, setImage] = useState(null);
+  const [menuImage, setMenuImage] = useState(null);
+  const history = useHistory();
 
   const registerSchema = {
     company_name: Joi.string().min(3).required().label("Company Name"),
@@ -40,7 +45,10 @@ export default function Registration() {
     business_type: Joi.string().required().label("Business Type"),
     is_delivering: Joi.string().required().label("Delivery Option"),
     dine_in_options: Joi.string().required().label("Delivery Option"),
-    delivery_radius: Joi.number().greater(0).required().label("Price"),
+    delivery_radius: Joi.number()
+      .greater(0)
+      .required()
+      .label("Delivery Radius"),
   };
 
   const validateProperty = (name, value, Schema) => {
@@ -92,7 +100,16 @@ export default function Registration() {
     setFoodType(types);
   };
 
-  const handleSubmit = (e) => {
+  const handleImageChange = ({ target }) => {
+    const { name, files } = target;
+    if (name === "menu_image") {
+      setMenuImage(files[0] !== undefined ? files[0] : null);
+    } else {
+      setImage(files[0] !== undefined ? files[0] : null);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     let errors = validate();
     if (!errors && registerData.password !== registerData.confirm_password) {
@@ -111,7 +128,42 @@ export default function Registration() {
     }
     if (errors) return;
 
-    
+    if (!image || !menuImage) {
+      toast.error("Vendor and Menu Image is required");
+      return;
+    }
+
+    const body = { ...registerData };
+    delete body.confirm_password;
+
+    await Api("post", `/api/vendors`, mapToFormData(body));
+    toast.success("Vendor Registered");
+    history.replace("/");
+  };
+
+  const mapToFormData = (body) => {
+    const fd = new FormData();
+    const address = {
+      lat: -20.896846,
+      lng: 55.493667,
+      postal_code: 20110,
+      label: "A Paratella 20110 Propriano",
+      city: "Propriano",
+    };
+
+    Object.keys(body).forEach((item) => {
+      fd.append(item, body[item]);
+    });
+
+    Object.keys(address).forEach((item) => {
+      fd.append(`address.${item}`, address[item]);
+    });
+
+    fd.append("menu_image", menuImage);
+    fd.append("image", image);
+    fd.append("food_type", JSON.stringify(foodType));
+
+    return fd;
   };
 
   return (
@@ -119,9 +171,12 @@ export default function Registration() {
       <Header />
       <Register
         data={registerData}
+        image={image}
+        menuImage={menuImage}
         errors={errors}
         handleChange={handleChange}
         handleFoodTypeChange={handleFoodTypeChange}
+        handleImageChange={handleImageChange}
         handleSubmit={handleSubmit}
       />
     </div>
