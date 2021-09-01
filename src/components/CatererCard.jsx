@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardActions from "@material-ui/core/CardActions";
@@ -10,6 +11,7 @@ import { HeroImg } from "../assets/images";
 import StarIcon from "@material-ui/icons/Star";
 
 const useStyles = makeStyles({
+  root: { minHeight: "330px" },
   btnArea: { display: "flex", justifyContent: "center" },
   btn: {
     color: "white",
@@ -28,7 +30,12 @@ const useStyles = makeStyles({
     justifyContent: "space-between",
     alignItems: "center",
   },
-  ratingDiv: { marginBottom: "5px" },
+  ratingDiv: {
+    marginBottom: "5px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
   ratingIcon: {
     fontSize: "18px",
     paddingTop: "5px",
@@ -37,8 +44,9 @@ const useStyles = makeStyles({
   },
 });
 
-const CatererCard = () => {
+const CatererCard = ({ vendor }) => {
   const classes = useStyles();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   return (
     <Card className={classes.root}>
@@ -46,7 +54,7 @@ const CatererCard = () => {
         component="img"
         alt="Contemplative Reptile"
         height="140"
-        image={HeroImg}
+        image={`${baseUrl}/${vendor.image}`}
         title="Contemplative Reptile"
       />
       <CardContent>
@@ -57,31 +65,33 @@ const CatererCard = () => {
             component="span"
             style={{ marginBottom: 0 }}
           >
-            Mom’s Café
+            {vendor.company_name}
           </Typography>
           <Typography gutterBottom variant="caption">
-            $$$
+            {vendor.price}$
           </Typography>
         </div>
 
         <div className={classes.ratingDiv}>
           <Typography gutterBottom variant="caption">
-            <em>Arlington, VA</em>
+            <em>{vendor.address.city}</em>
           </Typography>
-          <Typography gutterBottom variant="caption" className={classes.rating}>
+          <Typography gutterBottom variant="caption">
             <StarIcon className={classes.ratingIcon} />
             4.2 (23 ratings)
           </Typography>
         </div>
 
         <Typography variant="body2" color="textSecondary" component="p">
-          Authentic food with a salad and meat options for all the family.
+          {vendor.description}{" "}
         </Typography>
       </CardContent>
       <CardActions className={classes.btnArea}>
-        <Button size="small" variant="contained" className={classes.btn}>
-          See Info
-        </Button>
+        <Link to={`/vendor/${vendor._id}`} style={{ textDecoration: "none" }}>
+          <Button size="small" variant="contained" className={classes.btn}>
+            See Info
+          </Button>
+        </Link>
       </CardActions>
     </Card>
   );
