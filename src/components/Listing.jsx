@@ -1,12 +1,20 @@
 //Init
 import React from "react";
+import L from "leaflet";
+import { TileLayer, Marker, Map } from "react-leaflet";
+import MuiSelect from "./MuiSelect";
+import {
+  HeroImg,
+  UserMarker,
+  VendorMarker,
+  SelectedVendor,
+} from "../assets/images";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
-import { HeroImg, MapImg } from "../assets/images";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import CatererCard from "./CatererCard";
-import { TileLayer, Marker, Popup, Map } from "react-leaflet";
+import { Store } from "../StoreContext";
 
 // Styles
 const useStyles = makeStyles({
@@ -47,19 +55,37 @@ const useStyles = makeStyles({
   caterers: {
     background: "#F9F9F9",
     padding: "40px",
-    height: "600px",
+    height: "100vh",
     overflowY: "scroll",
   },
   mapBox: {
-    height: "600px",
+    height: "100vh",
     width: "100%",
     overflow: "hidden",
   },
-  cateringArea: { height: "600px" },
+  cateringArea: { height: "100vh" },
+  loadBtn: {
+    margin: "auto",
+    color: "black",
+    marginTop: "10px",
+  },
 });
 
-const Listing = ({ center, vendors }) => {
+const Listing = ({
+  center,
+  vendors,
+  filters,
+  selectedVendor,
+  handleMarkerClick,
+  handlePagination,
+  handleFilterChange,
+}) => {
   const classes = useStyles();
+
+  const userIcon = L.icon({ iconUrl: UserMarker });
+  const vendorIcon = L.icon({ iconUrl: VendorMarker });
+  const selecredVendorIcon = L.icon({ iconUrl: SelectedVendor });
+  const { vendors: allVendors } = Store();
 
   return (
     <div>
@@ -85,12 +111,82 @@ const Listing = ({ center, vendors }) => {
             Caterers in DMV area
           </Typography>
           <Grid container spacing={2}>
+            <Grid container spacing={1} style={{ padding: "10px" }}>
+              <Grid item xs={12} md={3}>
+                <MuiSelect
+                  label="Restaurant type"
+                  name="restaurant_type"
+                  value={filters["restaurant_type"]}
+                  handleChange={handleFilterChange}
+                  data={[
+                    { _id: 1, value: "Desi", label: "Desi" },
+                    { _id: 2, value: "Mediteranean", label: "Mediteranean" },
+                    { _id: 3, value: "Chinese/Thai", label: "Chinese/Thai" },
+                    { _id: 4, value: "Mexican", label: "Mexican" },
+                    { _id: 5, value: "American", label: "American" },
+                    { _id: 6, value: "African", label: "African" },
+                  ]}
+                />
+              </Grid>
+              <Grid item xs={12} md={2}>
+                <MuiSelect
+                  label={"Price"}
+                  name="price"
+                  value={filters["price"]}
+                  handleChange={handleFilterChange}
+                  data={[
+                    { _id: 1, value: "500", label: "500" },
+                    { _id: 2, value: "1000", label: "1000" },
+                    { _id: 3, value: "2000", label: "2000" },
+                  ]}
+                />
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <MuiSelect
+                  label={"Delivery Options"}
+                  name="is_delivering"
+                  value={filters["is_delivering"]}
+                  handleChange={handleFilterChange}
+                  data={[
+                    { _id: 1, value: "true", label: "Yes" },
+                    { _id: 2, value: "false", label: "No" },
+                  ]}
+                />
+              </Grid>
+              <Grid item xs={12} md={3}>
+                <MuiSelect
+                  label={"Dine-in Options"}
+                  name="dine_in_options"
+                  value={filters["dine_in_options"]}
+                  handleChange={handleFilterChange}
+                  data={[
+                    { _id: 1, value: "true", label: "Yes" },
+                    { _id: 2, value: "false", label: "No" },
+                  ]}
+                />
+              </Grid>
+            </Grid>
+
             {vendors.length > 0 ? (
-              vendors.map((item) => (
-                <Grid item xs={12} md={6}>
-                  <CatererCard vendor={item} />
+              <>
+                <Grid container spacing={2}>
+                  {vendors.map((item) => (
+                    <Grid item xs={12} md={6} key={item._id}>
+                      <CatererCard
+                        vendor={item}
+                        selectedVendor={selectedVendor}
+                      />
+                    </Grid>
+                  ))}
                 </Grid>
-              ))
+                <Button
+                  color="primary"
+                  className={classes.loadBtn}
+                  onClick={handlePagination}
+                >
+                  Load More
+                </Button>
+              </>
             ) : (
               <Grid item xs={12}>
                 <Typography
@@ -107,21 +203,31 @@ const Listing = ({ center, vendors }) => {
           item
           xs={12}
           sm={7}
-          style={{ height: "600px", width: "100%", overflow: "hidden" }}
+          style={{ height: "100vh", width: "100%", overflow: "hidden" }}
         >
-          <Map center={center} zoom={13} scrollWheelZoom={true}>
+          <Map
+            center={[center.lat, center.lng]}
+            zoom={12}
+            scrollWheelZoom={true}
+          >
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={center}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
-            <Marker position={[31.369693000000001, 74.27284610000005]}>
-              <Popup>A pretty CSS3 popup.</Popup>
-            </Marker>
+            <Marker position={[center.lat, center.lng]} icon={userIcon} />
+            {allVendors.length > 0 &&
+              allVendors.map((item) => (
+                <Marker
+                  key={item._id}
+                  position={[item.address.lat, item.address.lng]}
+                  icon={
+                    selectedVendor === item._id
+                      ? selecredVendorIcon
+                      : vendorIcon
+                  }
+                  onClick={() => handleMarkerClick(item._id)}
+                />
+              ))}
           </Map>
         </Grid>
       </Grid>
