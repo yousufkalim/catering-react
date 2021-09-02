@@ -58,7 +58,7 @@ const useStyles = makeStyles({
   cateringArea: { height: "600px" },
 });
 
-const Listing = () => {
+const Listing = ({ center, vendors }) => {
   const classes = useStyles();
 
   return (
@@ -81,20 +81,26 @@ const Listing = () => {
 
       <Grid container spacing={0} className={classes.cateringArea}>
         <Grid item xs={12} sm={5} className={classes.caterers}>
-          <Typography variant="h4">Caterers in DMV area</Typography>
+          <Typography variant="h4" style={{ marginBottom: "10px" }}>
+            Caterers in DMV area
+          </Typography>
           <Grid container spacing={2}>
-            <Grid item xs={12} md={6}>
-              <CatererCard />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CatererCard />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CatererCard />
-            </Grid>
-            <Grid item xs={12} md={6}>
-              <CatererCard />
-            </Grid>
+            {vendors.length > 0 ? (
+              vendors.map((item) => (
+                <Grid item xs={12} md={6}>
+                  <CatererCard vendor={item} />
+                </Grid>
+              ))
+            ) : (
+              <Grid item xs={12}>
+                <Typography
+                  variant="h6"
+                  style={{ marginTop: "10px", marginLeft: "6px" }}
+                >
+                  No Vendors in you area
+                </Typography>
+              </Grid>
+            )}
           </Grid>
         </Grid>
         <Grid
@@ -103,15 +109,18 @@ const Listing = () => {
           sm={7}
           style={{ height: "600px", width: "100%", overflow: "hidden" }}
         >
-          <Map center={[46.2276, 2.2137]} zoom={13} scrollWheelZoom={true}>
+          <Map center={center} zoom={13} scrollWheelZoom={true}>
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[46.2276, 2.2137]}>
+            <Marker position={center}>
               <Popup>
                 A pretty CSS3 popup. <br /> Easily customizable.
               </Popup>
+            </Marker>
+            <Marker position={[31.369693000000001, 74.27284610000005]}>
+              <Popup>A pretty CSS3 popup.</Popup>
             </Marker>
           </Map>
         </Grid>

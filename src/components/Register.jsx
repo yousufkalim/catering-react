@@ -7,6 +7,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Checkbox from "@material-ui/core/Checkbox";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles({
   main: {
@@ -48,12 +49,18 @@ const useStyles = makeStyles({
     border: "none",
     cursor: "pointer",
   },
+  uploadBtn: {
+    marginTop: "10px",
+  },
 });
 
 const Register = ({
   data,
+  image,
+  menuImage,
   errors,
   handleChange,
+  handleImageChange,
   handleFoodTypeChange,
   handleSubmit,
 }) => {
@@ -114,6 +121,38 @@ const Register = ({
         }
         label={label}
       />
+    );
+  };
+
+  const renderInputBtn = (name, label, imageData) => {
+    return (
+      <label htmlFor={name}>
+        <input
+          style={{ display: "none" }}
+          id={name}
+          name={name}
+          type="file"
+          accept="image/png, image/jpeg"
+          onChange={handleImageChange}
+        />
+
+        <Button
+          variant="contained"
+          component="span"
+          style={{ fontSize: "12px", background: "black", color: "white" }}
+          className={classes.uploadBtn}
+        >
+          {label}
+        </Button>
+        {imageData && (
+          <Typography
+            variant="body1"
+            style={{ textAlign: "center", marginTop: "5px" }}
+          >
+            {imageData.name}
+          </Typography>
+        )}
+      </label>
     );
   };
 
@@ -181,6 +220,10 @@ const Register = ({
         {errors["food_type"] && (
           <p className={classes.inputText}>{errors["food_type"]}</p>
         )}
+
+        {renderInputBtn("menu_image", "Upload Menu Image", menuImage)}
+        {renderInputBtn("image", "Upload Image", image)}
+
         <button className={classes.submit} onClick={handleSubmit}>
           Submit
         </button>
