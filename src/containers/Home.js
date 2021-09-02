@@ -54,6 +54,7 @@ export default function Home() {
       "get",
       `/api/vendors/filtered-vendors?price=${price}&is_delivering=${is_delivering}&dine_in_options=${dine_in_options}&restaurant_type=${restaurant_type}&lat=${lat}&lng=${lng}`
     );
+    setSelectedVendor("");
     updateStore({ vendors: data.vendors });
     setVendors(data.vendors.slice(0, pageSize));
   };
@@ -90,6 +91,7 @@ export default function Home() {
         name === "restaurant_type" ? value.trim() : restaurant_type
       }&lat=${location.lat}&lng=${location.lng}`
     );
+    setSelectedVendor("");
     updateStore({ vendors: data.vendors });
     setVendors(data.vendors.slice(0, pageSize));
   };
