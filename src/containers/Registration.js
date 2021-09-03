@@ -172,6 +172,7 @@ export default function Registration() {
       <Register
         data={registerData}
         image={image}
+        foodType={foodType}
         menuImage={menuImage}
         errors={errors}
         handleChange={handleChange}

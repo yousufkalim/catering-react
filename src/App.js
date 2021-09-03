@@ -1,14 +1,28 @@
 // Init
-import React from "react";
+import React, { useEffect } from "react";
 import { ToastContainer, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 // Files
 import Index from "./routes/index";
 import "./css/index.css";
+import Api from "./api/index";
+import { UpdateStore } from "./StoreContext";
 
 // Component
 function App() {
+  const updateStore = UpdateStore();
+
+  useEffect(() => {
+    checkingAuth();
+  }, []);
+
+  const checkingAuth = async () => {
+    const { data } = await Api("get", "/api/vendors/check-auth");
+    console.log("data", data.user);
+    updateStore({ user: data.user });
+  };
+
   return (
     <div className="App">
       {/* toastify Container for Notification */}

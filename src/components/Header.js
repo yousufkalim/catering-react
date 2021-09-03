@@ -49,7 +49,11 @@ const Header = () => {
             variant="h6"
             className={classes.title}
             style={
-              pathname !== "/register" ? { color: "white" } : { color: "black" }
+              pathname !== "/register" &&
+              pathname !== "/login" &&
+              pathname !== "/profile"
+                ? { color: "white" }
+                : { color: "black" }
             }
           >
             H-CATERING
