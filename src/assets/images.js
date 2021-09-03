@@ -9,6 +9,9 @@ import NextIcon from "./images/nextIcon.png";
 import PrevIcon from "./images/prevIcon.png";
 import HeroImg from "./images/heroImg.png";
 import MapImg from "./images/mapImg.png";
+import UserMarker from "./images/userMarker.png";
+import VendorMarker from "./images/vendorMarker.png";
+import SelectedVendor from "./images/selectedVendor.png";
 
 export {
   SliderImage1,
@@ -22,4 +25,7 @@ export {
   PrevIcon,
   HeroImg,
   MapImg,
+  UserMarker,
+  VendorMarker,
+  SelectedVendor,
 };

@@ -44,12 +44,15 @@ const useStyles = makeStyles({
   },
 });
 
-const CatererCard = ({ vendor }) => {
+const CatererCard = ({ vendor, selectedVendor }) => {
   const classes = useStyles();
   const baseUrl = process.env.REACT_APP_BASE_URL;
 
   return (
-    <Card className={classes.root}>
+    <Card
+      className={classes.root}
+      style={selectedVendor === vendor._id ? { border: "2px solid blue" } : {}}
+    >
       <CardMedia
         component="img"
         alt="Contemplative Reptile"
