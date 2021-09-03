@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // Importing Components
 import Header from "../components/Header";
-import Slider from "../components/Slider";
+import Slider from "../components/slider";
 import Profile from "../components/Profile";
 import Footer from "../components/Footer";
 import Api from "../api/index";
