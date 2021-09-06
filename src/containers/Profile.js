@@ -1,39 +1,60 @@
 // Init
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
 
 // Importing Components
 import Header from "../components/Header";
 import Register from "../components/Register.jsx";
-import { Store } from "../StoreContext";
+import Api from "../api/index";
+import { toast } from "react-toastify";
 
 // Home Component
 export default function Profile() {
+  const [userId, setUserId] = useState("");
   const [errors, setErrors] = useState({});
-  const [vendorData, setVendorData] = useState({});
+  const [vendorData, setVendorData] = useState({
+    company_name: "",
+    phone: "",
+    website: "",
+    facebook_page: "",
+    instagram_page: "",
+    description: "",
+    price: "",
+    max_people_limit: "",
+    business_type: "",
+    delivery_radius: "",
+    is_delivering: "",
+    dine_in_options: "",
+  });
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
-  const { user } = Store();
+  const history = useHistory();
 
   useEffect(() => {
-    console.log("user", user);
-    setVendorData({
-      company_name: user.company_name,
-      phone: user.phone,
-      website: user.website,
-      facebook_page: user.facebook_page,
-      instagram_page: user.instagram_page,
-      description: user.description,
-      price: user.price,
-      max_people_limit: user.max_people_limit,
-      business_type: user.business_type,
-      delivery_radius: user.delivery_radius,
-      is_delivering: user.is_delivering ? "true" : "false",
-      dine_in_options: user.dine_in_options ? "true" : "false",
-    });
-    setFoodType(user.food_type);
+    checkingAuth();
   }, []);
+
+  const checkingAuth = async () => {
+    const { data } = await Api("get", "/api/vendors/check-auth");
+    setUserId(data.user._id);
+    setVendorData({
+      company_name: data.user.company_name,
+      phone: data.user.phone,
+      website: data.user.website,
+      facebook_page: data.user.facebook_page,
+      instagram_page: data.user.instagram_page,
+      description: data.user.description,
+      price: data.user.price,
+      max_people_limit: data.user.max_people_limit,
+      business_type: data.user.business_type,
+      delivery_radius: data.user.delivery_radius,
+      is_delivering: data.user.is_delivering ? "true" : "false",
+      dine_in_options: data.user.dine_in_options ? "true" : "false",
+    });
+    setFoodType(data.user.food_type);
+  };
 
   const vendorSchema = {
     company_name: Joi.string().min(3).required().label("Company Name"),
@@ -127,6 +148,50 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    let errors = validate();
+    if (!errors && foodType.length < 1) {
+      errors = {
+        food_type: "Choose at least one Food Type",
+      };
+      setErrors(errors);
+    } else {
+      setErrors(errors || {});
+    }
+    if (errors) return;
+
+    await Api("put", `/api/vendors/${userId}`, mapToFormData(vendorData));
+    toast.success("Vendor Updated");
+    history.replace("/");
+  };
+
+  const mapToFormData = (body) => {
+    const fd = new FormData();
+    const address = {
+      lat: -20.896846,
+      lng: 55.493667,
+      postal_code: 20110,
+      label: "A Paratella 20110 Propriano",
+      city: "Propriano",
+    };
+
+    Object.keys(body).forEach((item) => {
+      fd.append(item, body[item]);
+    });
+
+    Object.keys(address).forEach((item) => {
+      fd.append(`address.${item}`, address[item]);
+    });
+
+    if (menuImage) {
+      fd.append("menu_image", menuImage);
+    }
+    if (image) {
+      fd.append("image", image);
+    }
+
+    fd.append("food_type", JSON.stringify(foodType));
+
+    return fd;
   };
 
   return (

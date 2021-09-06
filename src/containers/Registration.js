@@ -1,5 +1,5 @@
 // Init
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
 
@@ -8,15 +8,23 @@ import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 // Home Component
 export default function Registration() {
   const [errors, setErrors] = useState({});
   const [registerData, setRegisterData] = useState({});
+  const [allAddresses, setAllAddresses] = useState([]);
+  const [address, setAddress] = useState({
+    label: "",
+    lat: "",
+    lng: "",
+  });
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
   const history = useHistory();
+  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   const registerSchema = {
     company_name: Joi.string().min(3).required().label("Company Name"),
@@ -166,6 +174,33 @@ export default function Registration() {
     return fd;
   };
 
+  // useEffect(() => {
+  //   getAllPlaces();
+  // }, []);
+
+  const handleGetAddress = async ({ target }) => {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
+    );
+    setAllAddresses(data.candidates);
+  };
+
+  const handleAddressChange = async (e) => {
+    console.log(e.target.textContent);
+    if (e.target.textContent) {
+    } else {
+      setAddress({
+        label: "",
+        lat: "",
+        lng: "",
+      });
+    }
+    // const { data } = await axios.get(
+    //   `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
+    // );
+    // setAllAddresses(data.candidates);
+  };
+
   return (
     <div>
       <Header />
@@ -173,8 +208,11 @@ export default function Registration() {
         data={registerData}
         image={image}
         foodType={foodType}
+        addresses={allAddresses}
         menuImage={menuImage}
         errors={errors}
+        handleGetAddress={handleGetAddress}
+        handleAddressChange={handleAddressChange}
         handleChange={handleChange}
         handleFoodTypeChange={handleFoodTypeChange}
         handleImageChange={handleImageChange}

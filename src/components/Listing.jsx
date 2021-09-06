@@ -36,6 +36,7 @@ const useStyles = makeStyles({
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    textAlign: "center",
     color: "white",
   },
   subtitle: { marginTop: "30px" },

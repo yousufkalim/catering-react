@@ -9,6 +9,8 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles({
   main: {
@@ -59,10 +61,13 @@ const Register = ({
   data,
   image,
   foodType,
+  addresses,
   menuImage,
   errors,
   handleChange,
   handleImageChange,
+  handleGetAddress,
+  handleAddressChange,
   handleFoodTypeChange,
   handleSubmit,
 }) => {
@@ -116,7 +121,7 @@ const Register = ({
       <FormControlLabel
         control={
           <Checkbox
-            checked={foodType.includes(name) ? true : false}
+            checked={foodType?.includes(name) ? true : false}
             onChange={handleFoodTypeChange}
             name={name}
             color="primary"
@@ -170,6 +175,21 @@ const Register = ({
         <br /> We will promote your business to the muslim community.
       </Typography>
       <div className={classes.form}>
+        {/* <Autocomplete
+          id="combo-box-demo"
+          options={addresses}
+          getOptionLabel={(option) => option.formatted_address}
+          style={{ width: 300 }}
+          onChange={(e) => handleAddressChange(e)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Combo box"
+              variant="outlined"
+              onChange={(e) => handleGetAddress(e)}
+            />
+          )}
+        /> */}
         {renderInput("text", "company_name", "Name of the company")}
         {renderInput("text", "phone", "Phone Number")}
         {pathname === "/register" && (
