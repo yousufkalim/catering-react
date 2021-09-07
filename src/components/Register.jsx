@@ -83,7 +83,10 @@ const Register = ({
   address,
   menuImage,
   errors,
+  addressValue,
+  inputValue,
   handleChange,
+  handleInputValue,
   handleImageChange,
   handleGetAddress,
   handleAddressChange,
@@ -196,6 +199,11 @@ const Register = ({
       <div className={classes.form}>
         {renderInput("text", "company_name", "Name of the company")}
         <Autocomplete
+          value={addressValue}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) =>
+            handleInputValue(newInputValue)
+          }
           id="combo-box-demo"
           options={addresses}
           getOptionLabel={(option) => option.formatted_address}

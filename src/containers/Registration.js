@@ -20,6 +20,8 @@ export default function Registration() {
     lat: "",
     lng: "",
   });
+  const [inputValue, setInputValue] = useState("");
+  const [addressValue, setAddressValue] = useState("");
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
@@ -28,7 +30,7 @@ export default function Registration() {
 
   const registerSchema = {
     company_name: Joi.string().min(3).required().label("Company Name"),
-    phone: Joi.string().required().label("Phone"),
+    phone: Joi.string().max(25).required().label("Phone"),
     email: Joi.string().email().required().label("Email"),
     website: Joi.string()
       .required()
@@ -118,7 +120,7 @@ export default function Registration() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault(); 
+    e.preventDefault();
     let errors = validate();
     if (!errors && registerData.password !== registerData.confirm_password) {
       errors = {
@@ -189,6 +191,7 @@ export default function Registration() {
       const index = allAddresses.findIndex(
         (a) => a.formatted_address === target.textContent
       );
+      setAddressValue(allAddresses[index]);
       setAddress({
         label: allAddresses[index].formatted_address,
         lat: allAddresses[index].geometry?.location?.lat,
@@ -203,6 +206,8 @@ export default function Registration() {
     }
   };
 
+  const handleInputValue = (value) => setInputValue(value);
+
   return (
     <div>
       <Header />
@@ -214,6 +219,9 @@ export default function Registration() {
         address={address}
         menuImage={menuImage}
         errors={errors}
+        inputValue={inputValue}
+        addressValue={addressValue}
+        handleInputValue={handleInputValue}
         handleGetAddress={handleGetAddress}
         handleAddressChange={handleAddressChange}
         handleChange={handleChange}

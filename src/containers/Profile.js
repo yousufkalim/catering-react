@@ -37,6 +37,8 @@ export default function Profile() {
     lat: "",
     lng: "",
   });
+  const [inputValue, setInputValue] = useState("");
+  const [addressValue, setAddressValue] = useState("");
   const history = useHistory();
   const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
@@ -46,6 +48,7 @@ export default function Profile() {
 
   const checkingAuth = async () => {
     const { data } = await Api("get", "/api/vendors/check-auth");
+
     setUserId(data.user._id);
     setVendorData({
       company_name: data.user.company_name,
@@ -61,11 +64,20 @@ export default function Profile() {
       is_delivering: data.user.is_delivering ? "true" : "false",
       dine_in_options: data.user.dine_in_options ? "true" : "false",
     });
-    setFoodType(data.user.food_type);
+    setFoodType(JSON.parse(data.user.food_type));
     setAddress({
       label: data.user.address.label,
       lat: data.user.address.lat,
       lng: data.user.address.lng,
+    });
+    setAddressValue({
+      formatted_address: data.user.address.label,
+      geometry: {
+        location: {
+          lat: data.user.address.lat,
+          lng: data.user.address.lng,
+        },
+      },
     });
   };
 
@@ -218,6 +230,7 @@ export default function Profile() {
       const index = allAddresses.findIndex(
         (a) => a.formatted_address === target.textContent
       );
+      setAddressValue(allAddresses[index]);
       setAddress({
         label: allAddresses[index].formatted_address,
         lat: allAddresses[index].geometry?.location?.lat,
@@ -232,6 +245,8 @@ export default function Profile() {
     }
   };
 
+  const handleInputValue = (value) => setInputValue(value);
+
   return (
     <div>
       <Header />
@@ -242,9 +257,12 @@ export default function Profile() {
         addresses={allAddresses}
         address={address}
         menuImage={menuImage}
+        errors={errors}
+        inputValue={inputValue}
+        addressValue={addressValue}
+        handleInputValue={handleInputValue}
         handleGetAddress={handleGetAddress}
         handleAddressChange={handleAddressChange}
-        errors={errors}
         handleChange={handleChange}
         handleFoodTypeChange={handleFoodTypeChange}
         handleImageChange={handleImageChange}
