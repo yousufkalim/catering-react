@@ -6,10 +6,10 @@ const api = async (method = "get", uri, body) => {
   // Default setting for production
   if (window.location.hostname !== "localhost") {
     axios.defaults.withCredentials = true;
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
   }
 
   // API Call
-  const url = process.env.REACT_APP_BASE_URL + uri;
   return new Promise((resolve, reject) => {
     axios[method](url, body)
       .then((res) => resolve(res))
