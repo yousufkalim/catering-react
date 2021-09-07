@@ -11,7 +11,7 @@ const api = async (method = "get", uri, body) => {
 
   // API Call
   return new Promise((resolve, reject) => {
-    axios[method](url, body)
+    axios[method](uri, body)
       .then((res) => resolve(res))
       .catch((err) => {
         if (err?.response?.status === 403) {
