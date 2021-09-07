@@ -15,7 +15,7 @@ const MenuModal = ({ menu }) => {
       <img
         src={`${baseUrl}/${menu}`}
         alt="menu"
-        style={{ objectFit: "contain" }}
+        style={{ objectFit: "contain", width: "100%" }}
       />
     </div>
   );

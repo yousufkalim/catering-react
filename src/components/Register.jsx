@@ -28,7 +28,7 @@ const useStyles = makeStyles({
   },
   input: {
     width: "400px",
-    maxwidth: "400px",
+    maxWidth: "400px",
     height: "40px",
     padding: "10px",
     marginBottom: "20px",
@@ -55,6 +55,24 @@ const useStyles = makeStyles({
   uploadBtn: {
     marginTop: "10px",
   },
+  autoComplete: {
+    width: 400,
+    marginBottom: "10px",
+  },
+  addressField: {
+    width: "400px",
+    maxWidth: "400px",
+    "& button": { marginTop: "-5px" },
+    "& fieldset": {
+      height: "50px",
+      border: "1px solid rgba(0,0,0,0.5)",
+    },
+    "& label": {
+      marginTop: "-4px",
+      fontSize: "14px",
+      color: "gray",
+    },
+  },
 });
 
 const Register = ({
@@ -62,6 +80,7 @@ const Register = ({
   image,
   foodType,
   addresses,
+  address,
   menuImage,
   errors,
   handleChange,
@@ -175,22 +194,23 @@ const Register = ({
         <br /> We will promote your business to the muslim community.
       </Typography>
       <div className={classes.form}>
-        {/* <Autocomplete
+        {renderInput("text", "company_name", "Name of the company")}
+        <Autocomplete
           id="combo-box-demo"
           options={addresses}
           getOptionLabel={(option) => option.formatted_address}
-          style={{ width: 300 }}
+          classes={{ root: classes.autoComplete }}
           onChange={(e) => handleAddressChange(e)}
           renderInput={(params) => (
             <TextField
               {...params}
-              label="Combo box"
+              className={classes.addressField}
+              label="Address"
               variant="outlined"
               onChange={(e) => handleGetAddress(e)}
             />
           )}
-        /> */}
-        {renderInput("text", "company_name", "Name of the company")}
+        />
         {renderInput("text", "phone", "Phone Number")}
         {pathname === "/register" && (
           <> {renderInput("email", "email", "E-mail address")} </>

@@ -141,6 +141,10 @@ export default function Registration() {
       return;
     }
 
+    if (address.label.length < 1) {
+      toast.error("Address is required");
+      return;
+    }
     const body = { ...registerData };
     delete body.confirm_password;
 
@@ -151,11 +155,10 @@ export default function Registration() {
 
   const mapToFormData = (body) => {
     const fd = new FormData();
-    const address = {
-      lat: -20.896846,
-      lng: 55.493667,
-      postal_code: 20110,
-      label: "A Paratella 20110 Propriano",
+    const localAddress = {
+      lat: address.lat,
+      lng: address.lng,
+      label: address.label,
       city: "Propriano",
     };
 
@@ -163,8 +166,8 @@ export default function Registration() {
       fd.append(item, body[item]);
     });
 
-    Object.keys(address).forEach((item) => {
-      fd.append(`address.${item}`, address[item]);
+    Object.keys(localAddress).forEach((item) => {
+      fd.append(`address.${item}`, localAddress[item]);
     });
 
     fd.append("menu_image", menuImage);
@@ -174,10 +177,6 @@ export default function Registration() {
     return fd;
   };
 
-  // useEffect(() => {
-  //   getAllPlaces();
-  // }, []);
-
   const handleGetAddress = async ({ target }) => {
     const { data } = await axios.get(
       `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
@@ -185,9 +184,16 @@ export default function Registration() {
     setAllAddresses(data.candidates);
   };
 
-  const handleAddressChange = async (e) => {
-    console.log(e.target.textContent);
-    if (e.target.textContent) {
+  const handleAddressChange = async ({ target }) => {
+    if (target.textContent) {
+      const index = allAddresses.findIndex(
+        (a) => a.formatted_address === target.textContent
+      );
+      setAddress({
+        label: allAddresses[index].formatted_address,
+        lat: allAddresses[index].geometry?.location?.lat,
+        lng: allAddresses[index].geometry?.location?.lng,
+      });
     } else {
       setAddress({
         label: "",
@@ -195,10 +201,6 @@ export default function Registration() {
         lng: "",
       });
     }
-    // const { data } = await axios.get(
-    //   `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
-    // );
-    // setAllAddresses(data.candidates);
   };
 
   return (
@@ -209,6 +211,7 @@ export default function Registration() {
         image={image}
         foodType={foodType}
         addresses={allAddresses}
+        address={address}
         menuImage={menuImage}
         errors={errors}
         handleGetAddress={handleGetAddress}

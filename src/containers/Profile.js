@@ -2,12 +2,13 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 // Importing Components
 import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
-import { toast } from "react-toastify";
 
 // Home Component
 export default function Profile() {
@@ -30,7 +31,14 @@ export default function Profile() {
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
+  const [allAddresses, setAllAddresses] = useState([]);
+  const [address, setAddress] = useState({
+    label: "",
+    lat: "",
+    lng: "",
+  });
   const history = useHistory();
+  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   useEffect(() => {
     checkingAuth();
@@ -54,6 +62,11 @@ export default function Profile() {
       dine_in_options: data.user.dine_in_options ? "true" : "false",
     });
     setFoodType(data.user.food_type);
+    setAddress({
+      label: data.user.address.label,
+      lat: data.user.address.lat,
+      lng: data.user.address.lng,
+    });
   };
 
   const vendorSchema = {
@@ -166,11 +179,10 @@ export default function Profile() {
 
   const mapToFormData = (body) => {
     const fd = new FormData();
-    const address = {
-      lat: -20.896846,
-      lng: 55.493667,
-      postal_code: 20110,
-      label: "A Paratella 20110 Propriano",
+    const localAddress = {
+      lat: address.lat,
+      lng: address.lng,
+      label: address.label,
       city: "Propriano",
     };
 
@@ -178,8 +190,8 @@ export default function Profile() {
       fd.append(item, body[item]);
     });
 
-    Object.keys(address).forEach((item) => {
-      fd.append(`address.${item}`, address[item]);
+    Object.keys(localAddress).forEach((item) => {
+      fd.append(`address.${item}`, localAddress[item]);
     });
 
     if (menuImage) {
@@ -194,6 +206,32 @@ export default function Profile() {
     return fd;
   };
 
+  const handleGetAddress = async ({ target }) => {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
+    );
+    setAllAddresses(data.candidates);
+  };
+
+  const handleAddressChange = async ({ target }) => {
+    if (target.textContent) {
+      const index = allAddresses.findIndex(
+        (a) => a.formatted_address === target.textContent
+      );
+      setAddress({
+        label: allAddresses[index].formatted_address,
+        lat: allAddresses[index].geometry?.location?.lat,
+        lng: allAddresses[index].geometry?.location?.lng,
+      });
+    } else {
+      setAddress({
+        label: "",
+        lat: "",
+        lng: "",
+      });
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -201,7 +239,11 @@ export default function Profile() {
         data={vendorData}
         image={image}
         foodType={foodType}
+        addresses={allAddresses}
+        address={address}
         menuImage={menuImage}
+        handleGetAddress={handleGetAddress}
+        handleAddressChange={handleAddressChange}
         errors={errors}
         handleChange={handleChange}
         handleFoodTypeChange={handleFoodTypeChange}

@@ -32,7 +32,12 @@ const useStyles = makeStyles((theme) =>
   })
 );
 
-export default function TransitionsModal({ open, handleClose, body }) {
+export default function TransitionsModal({
+  open,
+  handleClose,
+  body,
+  hideCross = false,
+}) {
   const classes = useStyles();
 
   return (
@@ -53,7 +58,9 @@ export default function TransitionsModal({ open, handleClose, body }) {
           <Fade in={open}>
             <div className={classes.paper}>{body}</div>
           </Fade>
-          <CloseIcon className={classes.icon} onClick={handleClose} />
+          {!hideCross && (
+            <CloseIcon className={classes.icon} onClick={handleClose} />
+          )}
         </>
       </Modal>
     </div>
