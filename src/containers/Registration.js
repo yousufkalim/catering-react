@@ -118,7 +118,7 @@ export default function Registration() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+    e.preventDefault(); 
     let errors = validate();
     if (!errors && registerData.password !== registerData.confirm_password) {
       errors = {

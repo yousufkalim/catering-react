@@ -1,6 +1,8 @@
 // Init
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
+import Typography from "@material-ui/core/Typography";
+import { toast } from "react-toastify";
 import axios from "axios";
 
 // Importing Components
@@ -11,12 +13,22 @@ import Api from "../api/index";
 import { UpdateStore, Store } from "../StoreContext";
 import TransitionsModal from "../components/TransitionsModal";
 import LocationMdoal from "../components/LocationModal";
-import { toast } from "react-toastify";
 
 // Styles
 const useStyles = makeStyles({
   container: { position: "relative" },
   header: { position: "absolute", top: 0, zIndex: 1000, width: "100%" },
+  footNoteBtn: { marginLeft: "10px", color: "lightBlue", cursor: "pointer" },
+  footNote: {
+    position: "fixed",
+    bottom: 0,
+    width: "100%",
+    backgroundColor: "black",
+    padding: "20px",
+    zIndex: "10000",
+    color: "white",
+    textAlign: "center",
+  },
 });
 
 // Home Component
@@ -33,6 +45,7 @@ export default function Home() {
     lng: "",
   });
   const [locationModal, setLocationModal] = useState(false);
+  const [footNote, setFootNote] = useState(true);
   const [filters, setFilters] = useState({
     price: "",
     is_delivering: "",
@@ -45,6 +58,9 @@ export default function Home() {
 
   useEffect(() => {
     getUserLocation();
+    setTimeout(() => {
+      setFootNote(false);
+    }, 5000);
   }, []);
 
   const getUserLocation = () => {
@@ -211,6 +227,22 @@ export default function Home() {
           />
         }
       />
+
+      {footNote && (
+        <div className={classes.footNote}>
+          <Typography variant="body1">
+            <b>
+              Your location has been set automatically If you want to change it.
+              <span
+                className={classes.footNoteBtn}
+                onClick={() => setLocationModal(true)}
+              >
+                Click Here
+              </span>
+            </b>
+          </Typography>
+        </div>
+      )}
     </div>
   );
 }

@@ -107,13 +107,13 @@ const Listing = ({
       </div>
 
       <Grid container spacing={0} className={classes.cateringArea}>
-        <Grid item xs={12} sm={5} className={classes.caterers}>
+        <Grid item xs={12} md={5} className={classes.caterers}>
           <Typography variant="h4" style={{ marginBottom: "10px" }}>
             Caterers in DMV area
           </Typography>
           <Grid container spacing={2}>
             <Grid container spacing={1} style={{ padding: "10px" }}>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} lg={3}>
                 <MuiSelect
                   label="Restaurant type"
                   name="restaurant_type"
@@ -129,7 +129,7 @@ const Listing = ({
                   ]}
                 />
               </Grid>
-              <Grid item xs={12} md={2}>
+              <Grid item xs={12} lg={2}>
                 <MuiSelect
                   label={"Price"}
                   name="price"
@@ -142,7 +142,7 @@ const Listing = ({
                   ]}
                 />
               </Grid>
-              <Grid item xs={12} md={4}>
+              <Grid item xs={12} lg={4}>
                 <MuiSelect
                   label={"Delivery Options"}
                   name="is_delivering"
@@ -154,7 +154,7 @@ const Listing = ({
                   ]}
                 />
               </Grid>
-              <Grid item xs={12} md={3}>
+              <Grid item xs={12} lg={3}>
                 <MuiSelect
                   label={"Dine-in Options"}
                   name="dine_in_options"
@@ -203,7 +203,7 @@ const Listing = ({
         <Grid
           item
           xs={12}
-          sm={7}
+          md={7}
           style={{ height: "100vh", width: "100%", overflow: "hidden" }}
         >
           <Map
