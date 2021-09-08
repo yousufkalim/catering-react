@@ -5,12 +5,21 @@ import Typography from "@material-ui/core/Typography";
 // Styles
 const useStyles = makeStyles({
   input: {
+    "-webkit-width": "400px",
+    "-webkit-border-color": "black",
+    border: "1px solid black",
     width: "400px",
     maxwidth: "400px",
     height: "40px",
     padding: "10px",
     marginBottom: "20px",
     textAlign: "center",
+    "&:focus": {
+      border: "none",
+      outlineWidth: "2px",
+      outlineStyle: "solid",
+      outlineColor: "#3f51b5",
+    },
     "&::placeholder": { textAlign: "center" },
   },
   container: {

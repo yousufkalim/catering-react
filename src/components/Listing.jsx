@@ -209,7 +209,7 @@ const Listing = ({
           <Map
             center={[center.lat, center.lng]}
             zoom={12}
-            scrollWheelZoom={true}
+            scrollWheelZoom={false}
           >
             <TileLayer
               attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'

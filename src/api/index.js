@@ -8,6 +8,8 @@ const api = async (method = "get", uri, body) => {
     axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
   }
 
+  axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
+
   // API Call
   return new Promise((resolve, reject) => {
     axios[method](uri, body)
