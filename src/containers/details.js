@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 // Importing Components
 import Header from "../components/Header";
-import Slider from "../components/slider";
+import Slider from "../components/Slider";
 import Profile from "../components/Profile";
 import Footer from "../components/Footer";
 import Api from "../api/index";
@@ -15,7 +15,7 @@ import MenuModal from "../components/MenuModal";
 // styles
 const useStyles = makeStyles({
   container: { position: "relative" },
-  header: { position: "absolute", top: 0, zIndex: 1000 },
+  header: { position: "absolute", top: 0, zIndex: 1000, width: "100%" },
   slider: {
     overflow: "hidden",
   },

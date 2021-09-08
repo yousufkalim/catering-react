@@ -153,11 +153,10 @@ export default function Registration() {
     delete body.confirm_password;
 
     const { data } = await Api("post", `/api/vendors`, mapToFormData(body));
-    console.log(data.user);
     localStorage.setItem("token", data.token);
     updateStore({ user: data.user });
     toast.success("Vendor Registered");
-    // history.replace("/");
+    history.replace("/");
   };
 
   const mapToFormData = (body) => {
@@ -179,7 +178,9 @@ export default function Registration() {
 
     fd.append("menu_image", menuImage);
     fd.append("image", image);
-    fd.append("food_type", JSON.stringify(foodType));
+    foodType.forEach((item, index) => {
+      fd.append(`food_type[${index}]`, item);
+    });
 
     return fd;
   };

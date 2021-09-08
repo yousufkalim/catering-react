@@ -15,6 +15,7 @@ import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import CatererCard from "./CatererCard";
 import { Store } from "../StoreContext";
+import AnchorLink from "react-anchor-link-smooth-scroll";
 
 // Styles
 const useStyles = makeStyles({
@@ -101,12 +102,22 @@ const Listing = ({
           </Typography>
 
           <Button variant="contained" className={classes.btn}>
-            See the Options
+            <AnchorLink
+              href="#caterersList"
+              style={{ textDecoration: "none", color: "white" }}
+            >
+              See the Options
+            </AnchorLink>
           </Button>
         </div>
       </div>
 
-      <Grid container spacing={0} className={classes.cateringArea}>
+      <Grid
+        container
+        spacing={0}
+        className={classes.cateringArea}
+        id="caterersList"
+      >
         <Grid item xs={12} md={5} className={classes.caterers}>
           <Typography variant="h4" style={{ marginBottom: "10px" }}>
             Caterers in DMV area

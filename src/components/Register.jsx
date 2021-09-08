@@ -105,10 +105,16 @@ const Register = ({
   const classes = useStyles();
   const { pathname } = useLocation();
 
-  const renderInput = (type, name, placeholder) => {
+  const renderInput = (type, name, placeholder, label = "") => {
     return (
       <>
+        <label htmlFor={name}>
+          <Typography variant="body1" style={{ marginBottom: "10px" }}>
+            <b>{label}</b>
+          </Typography>
+        </label>
         <input
+          id={name}
           type={type}
           name={name}
           value={data[name]}
@@ -250,19 +256,24 @@ const Register = ({
         {renderInput("text", "description", "Description")}
         {renderInput("number", "price", "Price")}
         {renderInput("number", "max_people_limit", "Max People Limit")}
-        {renderRadioBtnWIthLabel("Type of Business", "business_type", [
+        {renderRadioBtnWIthLabel("Type of Business:", "business_type", [
           { value: "restaurant", label: "Restaurant" },
           { value: "caterer", label: "Caterer" },
         ])}
-        {renderRadioBtnWIthLabel("Do you provide delivery", "is_delivering", [
+        {renderRadioBtnWIthLabel("Do you provide delivery ?", "is_delivering", [
           { value: "true", label: "Yes" },
           { value: "false", label: "No" },
         ])}
-        {renderRadioBtnWIthLabel("Dine In Options", "dine_in_options", [
+        {renderRadioBtnWIthLabel("Dine In Options:", "dine_in_options", [
           { value: "true", label: "Yes" },
           { value: "false", label: "No" },
         ])}
-        {renderInput("number", "delivery_radius", "Miles")}
+        {renderInput(
+          "number",
+          "delivery_radius",
+          "Miles",
+          "If yes, please be precise how far from your location:"
+        )}
         <Typography variant="body1">
           <b>Type of food: </b>
         </Typography>

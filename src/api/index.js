@@ -5,8 +5,10 @@ import { toast } from "react-toastify";
 const api = async (method = "get", uri, body) => {
   // Default setting for production
   if (window.location.hostname !== "localhost") {
-    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL
+    axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
   }
+
+  // axios.defaults.baseURL = process.env.REACT_APP_BASE_URL;
 
   axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
 
@@ -19,7 +21,9 @@ const api = async (method = "get", uri, body) => {
           // window.location = "/login";
         } else {
           console.log("API Error --------> ", err.response.status);
-          toast.error(err?.response?.data ? err.response.data : err?.message);
+          if (err?.response?.status !== 401) {
+            toast.error(err?.response?.data ? err.response.data : err?.message);
+          }
           reject(err);
         }
       });

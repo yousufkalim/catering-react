@@ -64,7 +64,7 @@ export default function Profile() {
       is_delivering: data.user.is_delivering ? "true" : "false",
       dine_in_options: data.user.dine_in_options ? "true" : "false",
     });
-    setFoodType(JSON.parse(data.user.food_type));
+    setFoodType(data.user.food_type);
     setAddress({
       label: data.user.address.label,
       lat: data.user.address.lat,
@@ -213,7 +213,9 @@ export default function Profile() {
       fd.append("image", image);
     }
 
-    fd.append("food_type", JSON.stringify(foodType));
+    foodType.forEach((item, index) => {
+      fd.append(`food_type[${index}]`, item);
+    });
 
     return fd;
   };
