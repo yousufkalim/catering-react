@@ -19,8 +19,7 @@ function App() {
 
   const checkingAuth = async () => {
     const { data } = await Api("get", "/api/vendors/check-auth");
-    console.log("data", data.user);
-    // updateStore({ user: data.user });
+    updateStore({ user: data.user });
   };
 
   return (

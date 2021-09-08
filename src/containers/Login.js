@@ -47,10 +47,10 @@ export default function Login() {
       toast.error("Password cannot be empty");
       return;
     }
-    await Api("post", "/api/vendors/login", formData);
-    const { data: auth } = await Api("get", "/api/vendors/check-auth");
+    const { data } = await Api("post", "/api/vendors/login", formData);
 
-    updateStore({ user: auth.user });
+    updateStore({ user: data.user });
+    localStorage.setItem("token", data.token);
     history.replace("/profile");
   };
 

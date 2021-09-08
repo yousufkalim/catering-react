@@ -60,7 +60,7 @@ export default function Home() {
     getUserLocation();
     setTimeout(() => {
       setFootNote(false);
-    }, 5000);
+    }, 10000);
   }, []);
 
   const getUserLocation = () => {
@@ -150,9 +150,15 @@ export default function Home() {
   };
 
   const handleGetAddress = async ({ target }) => {
+    delete axios.defaults.headers.common["x-auth-token"];
     const { data } = await axios.get(
       `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
     );
+    axios.defaults.headers.common["x-auth-token"] = localStorage.setItem(
+      "token",
+      localStorage.getItem("token")
+    );
+
     setAllAddresses(data.candidates);
   };
 

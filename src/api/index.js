@@ -8,6 +8,8 @@ const api = async (method = "get", uri, body) => {
     axios.defaults.withCredentials = true;
   }
 
+  axios.defaults.headers.common["x-auth-token"] = localStorage.getItem("token");
+
   // API Call
   // const url = process.env.REACT_APP_BASE_URL + uri;
   return new Promise((resolve, reject) => {

@@ -9,6 +9,7 @@ import Register from "../components/Register.jsx";
 import Api from "../api/index";
 import { toast } from "react-toastify";
 import axios from "axios";
+import { UpdateStore } from "../StoreContext";
 
 // Home Component
 export default function Registration() {
@@ -26,6 +27,7 @@ export default function Registration() {
   const [image, setImage] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
   const history = useHistory();
+  const updateStore = UpdateStore();
   const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   const registerSchema = {
@@ -150,9 +152,12 @@ export default function Registration() {
     const body = { ...registerData };
     delete body.confirm_password;
 
-    await Api("post", `/api/vendors`, mapToFormData(body));
+    const { data } = await Api("post", `/api/vendors`, mapToFormData(body));
+    console.log(data.user);
+    localStorage.setItem("token", data.token);
+    updateStore({ user: data.user });
     toast.success("Vendor Registered");
-    history.replace("/");
+    // history.replace("/");
   };
 
   const mapToFormData = (body) => {
@@ -180,8 +185,13 @@ export default function Registration() {
   };
 
   const handleGetAddress = async ({ target }) => {
+    delete axios.defaults.headers.common["x-auth-token"];
     const { data } = await axios.get(
       `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
+    );
+    axios.defaults.headers.common["x-auth-token"] = localStorage.setItem(
+      "token",
+      localStorage.getItem("token")
     );
     setAllAddresses(data.candidates);
   };
