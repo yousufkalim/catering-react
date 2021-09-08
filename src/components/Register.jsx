@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React from "react";
+import { useLocation } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Radio from "@material-ui/core/Radio";
@@ -8,6 +9,8 @@ import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
+import TextField from "@material-ui/core/TextField";
+import Autocomplete from "@material-ui/lab/Autocomplete";
 
 const useStyles = makeStyles({
   main: {
@@ -25,7 +28,7 @@ const useStyles = makeStyles({
   },
   input: {
     width: "400px",
-    maxwidth: "400px",
+    maxWidth: "400px",
     height: "40px",
     padding: "10px",
     marginBottom: "20px",
@@ -52,19 +55,46 @@ const useStyles = makeStyles({
   uploadBtn: {
     marginTop: "10px",
   },
+  autoComplete: {
+    width: 400,
+    marginBottom: "10px",
+  },
+  addressField: {
+    width: "400px",
+    maxWidth: "400px",
+    "& button": { marginTop: "-5px" },
+    "& fieldset": {
+      height: "50px",
+      border: "1px solid rgba(0,0,0,0.5)",
+    },
+    "& label": {
+      marginTop: "-4px",
+      fontSize: "14px",
+      color: "gray",
+    },
+  },
 });
 
 const Register = ({
   data,
   image,
+  foodType,
+  addresses,
+  address,
   menuImage,
   errors,
+  addressValue,
+  inputValue,
   handleChange,
+  handleInputValue,
   handleImageChange,
+  handleGetAddress,
+  handleAddressChange,
   handleFoodTypeChange,
   handleSubmit,
 }) => {
   const classes = useStyles();
+  const { pathname } = useLocation();
 
   const renderInput = (type, name, placeholder) => {
     return (
@@ -82,7 +112,7 @@ const Register = ({
     );
   };
 
-  const renderRadioBtnWIthLabel = (label, name, data) => {
+  const renderRadioBtnWIthLabel = (label, name, localData) => {
     return (
       <FormControl component="fieldset" className={classes.radioBtns}>
         <FormLabel component="legend" className={classes.label}>
@@ -94,7 +124,7 @@ const Register = ({
           value={data[name]}
           onChange={handleChange}
         >
-          {data.map((item) => (
+          {localData.map((item) => (
             <FormControlLabel
               value={item.value}
               style={{ display: "flex", justifyContent: "center" }}
@@ -113,7 +143,7 @@ const Register = ({
       <FormControlLabel
         control={
           <Checkbox
-            // checked={state.checkedB}
+            checked={foodType?.includes(name) ? true : false}
             onChange={handleFoodTypeChange}
             name={name}
             color="primary"
@@ -158,7 +188,9 @@ const Register = ({
 
   return (
     <div className={classes.main}>
-      <Typography variant="h3">Vendors Registration</Typography>
+      <Typography variant="h3">
+        {pathname === "/register" ? "Vendors Registration" : "Update Details"}
+      </Typography>
 
       <Typography variant="body1" className={classes.caption}>
         Please join our network, and get leads for catering opportunities.
@@ -166,13 +198,46 @@ const Register = ({
       </Typography>
       <div className={classes.form}>
         {renderInput("text", "company_name", "Name of the company")}
+        <Autocomplete
+          value={addressValue}
+          inputValue={inputValue}
+          onInputChange={(event, newInputValue) =>
+            handleInputValue(newInputValue)
+          }
+          id="combo-box-demo"
+          options={addresses}
+          getOptionLabel={(option) => option.formatted_address}
+          classes={{ root: classes.autoComplete }}
+          onChange={(e) => handleAddressChange(e)}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              className={classes.addressField}
+              label="Address"
+              variant="outlined"
+              onChange={(e) => handleGetAddress(e)}
+            />
+          )}
+        />
         {renderInput("text", "phone", "Phone Number")}
-        {renderInput("email", "email", "E-mail address")}
+        {pathname === "/register" && (
+          <> {renderInput("email", "email", "E-mail address")} </>
+        )}
         {renderInput("text", "website", "Website")}
         {renderInput("text", "facebook_page", "Facebook Page")}
         {renderInput("text", "instagram_page", "Instagram Page")}
-        {renderInput("password", "password", "Password")}
-        {renderInput("password", "confirm_password", "Confirm Password")}
+        {pathname === "/register" && (
+          <>
+            {renderInput("password", "password", "Password")}
+            {renderInput("password", "confirm_password", "Confirm Password")}
+          </>
+        )}
+        {/* {pathname === "/profile" && (
+          <>
+            {renderInput("password", "old_password", "Old Password")}
+            {renderInput("password", "new_password", "New Password")}
+          </>
+        )} */}
         {renderInput("text", "description", "Description")}
         {renderInput("number", "price", "Price")}
         {renderInput("number", "max_people_limit", "Max People Limit")}

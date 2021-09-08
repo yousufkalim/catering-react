@@ -1,5 +1,5 @@
 // Init
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
 
@@ -8,19 +8,29 @@ import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 // Home Component
 export default function Registration() {
   const [errors, setErrors] = useState({});
   const [registerData, setRegisterData] = useState({});
+  const [allAddresses, setAllAddresses] = useState([]);
+  const [address, setAddress] = useState({
+    label: "",
+    lat: "",
+    lng: "",
+  });
+  const [inputValue, setInputValue] = useState("");
+  const [addressValue, setAddressValue] = useState("");
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
   const history = useHistory();
+  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   const registerSchema = {
     company_name: Joi.string().min(3).required().label("Company Name"),
-    phone: Joi.string().required().label("Phone"),
+    phone: Joi.string().max(25).required().label("Phone"),
     email: Joi.string().email().required().label("Email"),
     website: Joi.string()
       .required()
@@ -133,6 +143,10 @@ export default function Registration() {
       return;
     }
 
+    if (address.label.length < 1) {
+      toast.error("Address is required");
+      return;
+    }
     const body = { ...registerData };
     delete body.confirm_password;
 
@@ -143,11 +157,10 @@ export default function Registration() {
 
   const mapToFormData = (body) => {
     const fd = new FormData();
-    const address = {
-      lat: -20.896846,
-      lng: 55.493667,
-      postal_code: 20110,
-      label: "A Paratella 20110 Propriano",
+    const localAddress = {
+      lat: address.lat,
+      lng: address.lng,
+      label: address.label,
       city: "Propriano",
     };
 
@@ -155,8 +168,8 @@ export default function Registration() {
       fd.append(item, body[item]);
     });
 
-    Object.keys(address).forEach((item) => {
-      fd.append(`address.${item}`, address[item]);
+    Object.keys(localAddress).forEach((item) => {
+      fd.append(`address.${item}`, localAddress[item]);
     });
 
     fd.append("menu_image", menuImage);
@@ -166,14 +179,51 @@ export default function Registration() {
     return fd;
   };
 
+  const handleGetAddress = async ({ target }) => {
+    const { data } = await axios.get(
+      `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
+    );
+    setAllAddresses(data.candidates);
+  };
+
+  const handleAddressChange = async ({ target }) => {
+    if (target.textContent) {
+      const index = allAddresses.findIndex(
+        (a) => a.formatted_address === target.textContent
+      );
+      setAddressValue(allAddresses[index]);
+      setAddress({
+        label: allAddresses[index].formatted_address,
+        lat: allAddresses[index].geometry?.location?.lat,
+        lng: allAddresses[index].geometry?.location?.lng,
+      });
+    } else {
+      setAddress({
+        label: "",
+        lat: "",
+        lng: "",
+      });
+    }
+  };
+
+  const handleInputValue = (value) => setInputValue(value);
+
   return (
     <div>
       <Header />
       <Register
         data={registerData}
         image={image}
+        foodType={foodType}
+        addresses={allAddresses}
+        address={address}
         menuImage={menuImage}
         errors={errors}
+        inputValue={inputValue}
+        addressValue={addressValue}
+        handleInputValue={handleInputValue}
+        handleGetAddress={handleGetAddress}
+        handleAddressChange={handleAddressChange}
         handleChange={handleChange}
         handleFoodTypeChange={handleFoodTypeChange}
         handleImageChange={handleImageChange}

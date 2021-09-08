@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import Grid from "@material-ui/core/Grid";
 import {
   AddressIcon,
   CashIcon,
@@ -15,15 +16,12 @@ import {
 const useStyles = makeStyles({
   icons: {
     marginTop: "40px",
-    display: "flex",
-    justifyContent: "space-between",
   },
   iconDiv: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
-    marginRight: "5px",
-    marginLeft: "5px",
+    textAlign: "center",
   },
   iconText: { marginTop: "20px" },
   presentation: {
@@ -74,14 +72,15 @@ const Profile = ({ vendor, handleMenuOpen }) => {
   return (
     <>
       <Container>
-        <div className={classes.icons}>
-          <div className={classes.iconDiv}>
+        <Grid container spacing={3} className={classes.icons}>
+          <Grid item xs={12} md={1} />
+          <Grid item xs={12} md={2} className={classes.iconDiv}>
             <img src={AddressIcon} alt="address" width="65px" />
             <Typography variant="body1" className={classes.iconText}>
               {vendor?.address?.label}
             </Typography>
-          </div>
-          <div className={classes.iconDiv}>
+          </Grid>
+          <Grid item xs={12} md={2} className={classes.iconDiv}>
             <img
               src={DeliveryIcon}
               alt="address"
@@ -91,26 +90,26 @@ const Profile = ({ vendor, handleMenuOpen }) => {
             <Typography variant="body1" className={classes.iconText}>
               {vendor.delivery_radius} Miles
             </Typography>
-          </div>
-          <div className={classes.iconDiv}>
+          </Grid>
+          <Grid item xs={12} md={2} className={classes.iconDiv}>
             <img src={MaxPeopleIcon} alt="address" width="82px" />
             <Typography variant="body1" className={classes.iconText}>
               Max {vendor.max_people_limit} People
             </Typography>
-          </div>
-          <div className={classes.iconDiv}>
+          </Grid>
+          <Grid item xs={12} md={2} className={classes.iconDiv}>
             <img src={CashIcon} alt="address" width="79px" />
             <Typography variant="body1" className={classes.iconText}>
               {vendor.price}$
             </Typography>
-          </div>
-          <div className={classes.iconDiv}>
+          </Grid>
+          <Grid item xs={12} md={2} className={classes.iconDiv}>
             <img src={RatingIcon} alt="address" width="89px" />
             <Typography variant="body1" className={classes.iconText}>
               {vendor.final_rating} ({vendor?.ratings?.length} reviews)
             </Typography>
-          </div>
-        </div>
+          </Grid>
+        </Grid>
 
         <div className={classes.presentation}>
           <Typography variant="h4" className={classes.heading}>

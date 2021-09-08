@@ -9,8 +9,8 @@ import Slider from "../components/slider";
 import Profile from "../components/Profile";
 import Footer from "../components/Footer";
 import Api from "../api/index";
-import TransitionsModal from "../components/transitionsModal";
-import MenuModal from "../components/menuModal";
+import TransitionsModal from "../components/TransitionsModal";
+import MenuModal from "../components/MenuModal";
 
 // styles
 const useStyles = makeStyles({
