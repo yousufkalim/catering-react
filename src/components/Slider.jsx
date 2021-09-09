@@ -96,7 +96,9 @@ const Slider = ({ name }) => {
       </Carousel>
 
       <div className={classes.headingDiv}>
-        <Typography variant="h3">{name?.toUpperCase()}</Typography>
+        <Typography variant="h3">
+          <b>{name?.toUpperCase()}</b>
+        </Typography>
       </div>
     </div>
   );

@@ -78,7 +78,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Profile = ({ vendor, handleMenuOpen }) => {
+const Profile = ({ vendor, handleMenuOpen, handleReviewsOpen }) => {
   const classes = useStyles();
 
   return (
@@ -125,10 +125,12 @@ const Profile = ({ vendor, handleMenuOpen }) => {
             </Typography>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img src={RatingIcon} alt="address" width="89px" />
-            <Typography variant="body1" className={classes.iconText}>
-              {vendor.final_rating} ({vendor?.ratings?.length} reviews)
-            </Typography>
+            <div onClick={handleReviewsOpen} style={{ cursor: "pointer" }}>
+              <img src={RatingIcon} alt="address" width="89px" />
+              <Typography variant="body1" className={classes.iconText}>
+                {vendor.final_rating} ({vendor?.ratings?.length} reviews)
+              </Typography>
+            </div>
           </Grid>
         </Grid>
 

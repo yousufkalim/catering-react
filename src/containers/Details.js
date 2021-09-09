@@ -11,6 +11,7 @@ import Footer from "../components/Footer";
 import Api from "../api/index";
 import TransitionsModal from "../components/TransitionsModal";
 import MenuModal from "../components/MenuModal";
+import ReviewModal from "../components/ReviewModal";
 
 // styles
 const useStyles = makeStyles({
@@ -25,15 +26,21 @@ const useStyles = makeStyles({
 export default function Details() {
   const classes = useStyles();
   const [vendor, setVendor] = useState({});
-  const [open, setOpen] = useState(false);
+  const [ratings, setRatings] = useState([]);
+  const [openMenu, setOpenMenu] = useState(false);
+  const [openReviews, setOpenReviews] = useState(false);
   const { id } = useParams();
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpenMenu = () => setOpenMenu(true);
+  const handleCloseMenu = () => setOpenMenu(false);
+
+  const handleOpenReviews = () => setOpenReviews(true);
+  const handleCloseReviews = () => setOpenReviews(false);
 
   const getVendor = async () => {
     const { data } = await Api("get", `/api/vendors/${id}`);
     setVendor(data.vendor);
+    setRatings(data.vendor.ratings);
   };
 
   useEffect(() => {
@@ -48,12 +55,22 @@ export default function Details() {
       <div className={classes.slider}>
         <Slider name={vendor.company_name} />
       </div>
-      <Profile vendor={vendor} handleMenuOpen={handleOpen} />
+      <Profile
+        vendor={vendor}
+        handleMenuOpen={handleOpenMenu}
+        handleReviewsOpen={handleOpenReviews}
+      />
       <Footer />
       <TransitionsModal
-        open={open}
-        handleClose={handleClose}
+        open={openMenu}
+        handleClose={handleCloseMenu}
         body={<MenuModal menu={vendor.menu_image} />}
+      />
+
+      <TransitionsModal
+        open={openReviews}
+        handleClose={handleCloseReviews}
+        body={<ReviewModal />}
       />
     </div>
   );
