@@ -12,6 +12,9 @@ import MapImg from "./images/mapImg.png";
 import UserMarker from "./images/userMarker.png";
 import VendorMarker from "./images/vendorMarker.png";
 import SelectedVendor from "./images/selectedVendor.png";
+import FacebookIcon from "./images/facebookIcon.png";
+import InstagramIcon from "./images/instagramIcon.png";
+import WebIcon from "./images/webIcon.png";
 
 export {
   SliderImage1,
@@ -28,4 +31,7 @@ export {
   UserMarker,
   VendorMarker,
   SelectedVendor,
+  FacebookIcon,
+  InstagramIcon,
+  WebIcon,
 };

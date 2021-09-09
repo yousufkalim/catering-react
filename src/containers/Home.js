@@ -158,8 +158,9 @@ export default function Home() {
       "token",
       localStorage.getItem("token")
     );
-
     setAllAddresses(data.candidates);
+    // const { data } = await Api("get", `/api/places?name=${target.value}`);
+    // setAllAddresses(data.places);
   };
 
   const handleAddressChange = async ({ target }) => {

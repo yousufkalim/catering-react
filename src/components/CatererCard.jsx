@@ -7,7 +7,6 @@ import CardContent from "@material-ui/core/CardContent";
 import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import { HeroImg } from "../assets/images";
 import StarIcon from "@material-ui/icons/Star";
 
 const useStyles = makeStyles({
@@ -81,7 +80,7 @@ const CatererCard = ({ vendor, selectedVendor }) => {
           </Typography>
           <Typography gutterBottom variant="caption">
             <StarIcon className={classes.ratingIcon} />
-            4.2 (23 ratings)
+            {vendor.final_rating} ({vendor.ratings?.length} ratings)
           </Typography>
         </div>
 
