@@ -23,12 +23,14 @@ const useStyles = makeStyles({
     border: "none",
   },
   headingDiv: {
+    backgroundColor: "rgba(0,0,0,0.5)",
+    width: "100%",
+    height: "100%",
     position: "absolute",
     bottom: 0,
-    width: "100%",
     display: "flex",
     justifyContent: "center",
-    zIndex: "10000",
+    alignItems: "center",
     color: "white",
   },
 });
@@ -94,7 +96,7 @@ const Slider = ({ name }) => {
       </Carousel>
 
       <div className={classes.headingDiv}>
-        <Typography variant="h3">{name}</Typography>
+        <Typography variant="h3">{name?.toUpperCase()}</Typography>
       </div>
     </div>
   );

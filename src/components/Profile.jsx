@@ -10,7 +10,11 @@ import {
   DeliveryIcon,
   MaxPeopleIcon,
   RatingIcon,
+  FacebookIcon,
+  InstagramIcon,
+  WebIcon,
 } from "../assets/images";
+import Tooltip from "@material-ui/core/Tooltip";
 
 // styles
 const useStyles = makeStyles({
@@ -64,6 +68,14 @@ const useStyles = makeStyles({
       backgroundColor: "black",
     },
   },
+  socialLinks: {
+    marginRight: "15px",
+    marginLeft: "15px",
+  },
+  tooltip: {
+    fontSize: "16px",
+    textAlign: "center",
+  },
 });
 
 const Profile = ({ vendor, handleMenuOpen }) => {
@@ -75,10 +87,19 @@ const Profile = ({ vendor, handleMenuOpen }) => {
         <Grid container spacing={3} className={classes.icons}>
           <Grid item xs={12} md={1} />
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img src={AddressIcon} alt="address" width="65px" />
-            <Typography variant="body1" className={classes.iconText}>
-              {vendor?.address?.label}
-            </Typography>
+            <Tooltip
+              title={`${vendor?.address?.label}`}
+              placement="top"
+              arrow
+              classes={{ tooltip: classes.tooltip }}
+            >
+              <div>
+                <img src={AddressIcon} alt="address" width="65px" />
+                <Typography variant="body1" className={classes.iconText}>
+                  {vendor?.address?.label.substring(0, 20)}...
+                </Typography>
+              </div>
+            </Tooltip>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
             <img
@@ -141,9 +162,30 @@ const Profile = ({ vendor, handleMenuOpen }) => {
           </Typography>
           <hr className={classes.hr} />
           <Typography variant="body1" className={classes.text}>
-            {vendor.website} <br />
-            {vendor.facebook_page} <br />
-            {vendor.instagram_page} <br />
+            <a
+              href={vendor.website}
+              target="_blank"
+              rel="noreferrer"
+              className={classes.socialLinks}
+            >
+              <img src={WebIcon} alt="Web" width="38px" />
+            </a>
+            <a
+              href={vendor.facebook_page}
+              target="_blank"
+              rel="noreferrer"
+              className={classes.socialLinks}
+            >
+              <img src={FacebookIcon} alt="Facebook" width="38px" />
+            </a>
+            <a
+              href={vendor.instagram_page}
+              target="_blank"
+              rel="noreferrer"
+              className={classes.socialLinks}
+            >
+              <img src={InstagramIcon} alt="Instagram" width="38px" />
+            </a>
           </Typography>
         </div>
       </Container>
