@@ -12,6 +12,9 @@ import Api from "../api/index";
 import TransitionsModal from "../components/TransitionsModal";
 import MenuModal from "../components/MenuModal";
 import ReviewModal from "../components/ReviewModal";
+import AddReviewModal from "../components/AddReviewModal";
+import Joi from "joi-browser";
+import publicIp from "public-ip";
 
 // styles
 const useStyles = makeStyles({
@@ -26,9 +29,17 @@ const useStyles = makeStyles({
 export default function Details() {
   const classes = useStyles();
   const [vendor, setVendor] = useState({});
-  const [ratings, setRatings] = useState([]);
+  const [reviews, setReviews] = useState([]);
   const [openMenu, setOpenMenu] = useState(false);
   const [openReviews, setOpenReviews] = useState(false);
+  const [addReview, setAddReviews] = useState(false);
+  const [review, setReview] = useState({
+    username: "",
+    comment: "",
+  });
+  const [errors, setErrors] = useState({});
+  const [ratingValue, setRatingValue] = useState(1);
+
   const { id } = useParams();
 
   const handleOpenMenu = () => setOpenMenu(true);
@@ -37,15 +48,103 @@ export default function Details() {
   const handleOpenReviews = () => setOpenReviews(true);
   const handleCloseReviews = () => setOpenReviews(false);
 
+  const handleOpenAddReview = () => {
+    setOpenReviews(false);
+    setAddReviews(true);
+  };
+  const handleCloseAddReview = () => {
+    setAddReviews(false);
+    setOpenReviews(true);
+    setReview({
+      username: "",
+      comment: "",
+    });
+    setErrors({});
+    setRatingValue(1);
+  };
+
   const getVendor = async () => {
     const { data } = await Api("get", `/api/vendors/${id}`);
     setVendor(data.vendor);
-    setRatings(data.vendor.ratings);
+    setReviews(data.vendor.ratings.reverse());
   };
 
   useEffect(() => {
     getVendor();
   }, []);
+
+  const reviewSchema = {
+    username: Joi.string().min(3).required().label("Username"),
+    comment: Joi.string().min(6).required().label("Comment"),
+  };
+
+  const validateProperty = (name, value, Schema) => {
+    const obj = { [name]: value };
+    const schema = {
+      [name]: Schema[name],
+    };
+    const { error } = Joi.validate(obj, schema);
+    return error ? error.details[0].message : null;
+  };
+
+  const validate = () => {
+    const options = { abortEarly: false };
+    let errors = {};
+    const result = Joi.validate(review, reviewSchema, options);
+    if (!result.error) return null;
+    for (let item of result.error.details) {
+      errors[item.path] = item.message;
+    }
+    return errors;
+  };
+
+  const handleChange = ({ target }) => {
+    const { name, value } = target;
+    const allErrors = { ...errors };
+    const errorMessage = validateProperty(name, value, reviewSchema);
+    if (errorMessage) allErrors[name] = errorMessage;
+    else delete allErrors[name];
+    setErrors(allErrors);
+
+    const formData = { ...review };
+    formData[name] = value;
+    setReview(formData);
+  };
+
+  const handleRatingChange = (newRating) => setRatingValue(newRating);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    let errors = validate();
+    setErrors(errors || {});
+    if (errors) return;
+
+    const ip = await publicIp.v4();
+    const allReviews = [...reviews];
+    const localVendor = { ...vendor };
+    const { data } = await Api("post", `/api/ratings`, {
+      username: review.username,
+      comment: review.comment,
+      rating: ratingValue,
+      vendorId: id,
+      ip,
+    });
+
+    allReviews.unshift(data.review);
+    setReviews(allReviews);
+    
+    localVendor.ratings.push(data.review);
+    let final_rating = 0;
+    localVendor.ratings.forEach((item) => {
+      final_rating += item.rating;
+    });
+    localVendor.final_rating = Math.floor(
+      final_rating / localVendor.ratings.length
+    );
+    setVendor(localVendor);
+    handleCloseAddReview();
+  };
 
   return (
     <div className={classes.container}>
@@ -70,7 +169,27 @@ export default function Details() {
       <TransitionsModal
         open={openReviews}
         handleClose={handleCloseReviews}
-        body={<ReviewModal />}
+        body={
+          <ReviewModal
+            ratings={reviews}
+            handleOpenAddReview={handleOpenAddReview}
+          />
+        }
+      />
+
+      <TransitionsModal
+        open={addReview}
+        handleClose={handleCloseAddReview}
+        body={
+          <AddReviewModal
+            review={review}
+            rating={ratingValue}
+            errors={errors}
+            handleChange={handleChange}
+            handleRatingChange={handleRatingChange}
+            handleSubmit={handleSubmit}
+          />
+        }
       />
     </div>
   );
