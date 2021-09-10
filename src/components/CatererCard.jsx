@@ -85,7 +85,8 @@ const CatererCard = ({ vendor, selectedVendor }) => {
         </div>
 
         <Typography variant="body2" color="textSecondary" component="p">
-          {vendor.description}{" "}
+          {vendor.description.substring(0, 75)}
+          {vendor.description.length > 75 ? "..." : ""}
         </Typography>
       </CardContent>
       <CardActions className={classes.btnArea}>
