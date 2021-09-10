@@ -133,7 +133,7 @@ export default function Details() {
 
     allReviews.unshift(data.review);
     setReviews(allReviews);
-    
+
     localVendor.ratings.push(data.review);
     let final_rating = 0;
     localVendor.ratings.forEach((item) => {
@@ -156,6 +156,7 @@ export default function Details() {
       </div>
       <Profile
         vendor={vendor}
+        vendorId={id}
         handleMenuOpen={handleOpenMenu}
         handleReviewsOpen={handleOpenReviews}
       />

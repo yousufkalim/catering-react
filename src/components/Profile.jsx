@@ -15,6 +15,7 @@ import {
   WebIcon,
 } from "../assets/images";
 import Tooltip from "@material-ui/core/Tooltip";
+import { Store } from "../StoreContext";
 
 // styles
 const useStyles = makeStyles({
@@ -78,8 +79,10 @@ const useStyles = makeStyles({
   },
 });
 
-const Profile = ({ vendor, handleMenuOpen, handleReviewsOpen }) => {
+const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
   const classes = useStyles();
+  const { user } = Store();
+  console.log(user);
 
   return (
     <>
@@ -125,7 +128,10 @@ const Profile = ({ vendor, handleMenuOpen, handleReviewsOpen }) => {
             </Typography>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <div onClick={handleReviewsOpen} style={{ cursor: "pointer" }}>
+            <div
+              onClick={user?._id !== vendorId ? handleReviewsOpen : () => {}}
+              style={user?._id !== vendorId ? { cursor: "pointer" } : {}}
+            >
               <img src={RatingIcon} alt="address" width="89px" />
               <Typography variant="body1" className={classes.iconText}>
                 {vendor.final_rating} ({vendor?.ratings?.length} reviews)
