@@ -18,7 +18,7 @@ import { Store } from "../StoreContext";
 import AnchorLink from "react-anchor-link-smooth-scroll";
 
 // Styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   heroDiv: {
     position: "relative",
     height: "100vh",
@@ -71,7 +71,8 @@ const useStyles = makeStyles({
     color: "black",
     marginTop: "10px",
   },
-});
+  catererHeading: { color: theme.palette.primary.dark },
+}));
 
 const Listing = ({
   center,
@@ -119,7 +120,12 @@ const Listing = ({
         id="caterersList"
       >
         <Grid item xs={12} md={5} className={classes.caterers}>
-          <Typography variant="h4" style={{ marginBottom: "10px" }}>
+          <Typography
+            variant="h4"
+            // color="primary"
+            className={classes.catererHeading}
+            style={{ marginBottom: "10px" }}
+          >
             Caterers in DMV area
           </Typography>
           <Grid container spacing={2}>
