@@ -27,24 +27,17 @@ const useStyles = makeStyles((theme) => ({
     flexDirection: "column",
     alignItems: "center",
   },
-  input: {
-    "-webkit-width": "400px",
-    "-webkit-border-color": "black",
-    border: "1px solid black",
-    width: "400px",
-    maxWidth: "400px",
-    height: "40px",
-    padding: "10px",
+  field: {
+    width: "100%",
     marginBottom: "20px",
     textAlign: "center",
-    "&:focus": {
-      border: "none",
-      outlineWidth: "2px",
-      outlineStyle: "solid",
-      outlineColor: "#3f51b5",
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#2662b1",
+      },
     },
-    "&::placeholder": { textAlign: "center" },
   },
+  input: { height: "50px" },
   inputText: {
     marginBottom: "20px",
     color: "red",
@@ -66,12 +59,10 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "10px",
   },
   autoComplete: {
-    width: 400,
+    width: "100%",
     marginBottom: "10px",
   },
   addressField: {
-    width: "400px",
-    maxWidth: "400px",
     "& button": { marginTop: "-5px" },
     "& fieldset": {
       height: "50px",
@@ -114,16 +105,22 @@ const Register = ({
             <b>{label}</b>
           </Typography>
         </label>
-        <input
+        <TextField
+          required
           id={name}
+          label={placeholder}
           type={type}
           name={name}
+          variant="outlined"
           value={data[name]}
-          placeholder={placeholder}
-          className={classes.input}
+          className={classes.field}
+          InputProps={{
+            className: classes.input,
+          }}
           onChange={handleChange}
+          error={errors[name]}
+          helperText={errors[name]}
         />
-        {errors[name] && <p className={classes.inputText}>{errors[name]}</p>}
       </>
     );
   };

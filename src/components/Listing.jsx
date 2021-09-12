@@ -152,9 +152,9 @@ const Listing = ({
                   value={filters["price"]}
                   handleChange={handleFilterChange}
                   data={[
-                    { _id: 1, value: "500", label: "500" },
-                    { _id: 2, value: "1000", label: "1000" },
-                    { _id: 3, value: "2000", label: "2000" },
+                    { _id: 1, value: "500", label: "0 - 500" },
+                    { _id: 2, value: "1000", label: "500 - 1000" },
+                    { _id: 3, value: "2000", label: "1000 - 2000" },
                   ]}
                 />
               </Grid>

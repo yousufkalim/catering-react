@@ -51,6 +51,7 @@ export default function Home() {
     is_delivering: "",
     dine_in_options: "",
     restaurant_type: "",
+    lower_price: "",
   });
   const updateStore = UpdateStore();
   const { vendors: allVendors } = Store();
@@ -121,16 +122,55 @@ export default function Home() {
   };
 
   const handleFilterChange = async ({ target }) => {
-    const { price, is_delivering, dine_in_options, restaurant_type } = filters;
+    const {
+      lower_price,
+      price,
+      is_delivering,
+      dine_in_options,
+      restaurant_type,
+    } = filters;
     const { name, value } = target;
     const allFilters = { ...filters };
+    let lower_range = "",
+      upper_range = "";
 
-    allFilters[name] = value.trim();
-    setFilters(allFilters);
+    if (name === "price") {
+      if (value.trim().length < 1) {
+        allFilters.price = "";
+        allFilters.lower_price = "";
+      }
+      if (value.trim() === "500") {
+        allFilters.lower_price = 0;
+        allFilters.price = 500;
+        lower_range = 0;
+        upper_range = 500;
+      }
+      if (value.trim() === "1000") {
+        allFilters.lower_price = 500;
+        allFilters.price = 1000;
+        lower_range = 500;
+        upper_range = 1000;
+      }
+      if (value.trim() === "2000") {
+        allFilters.lower_price = 1000;
+        allFilters.price = 2000;
+        lower_range = 1000;
+        upper_range = 2000;
+      }
+      setFilters(allFilters);
+    }
+
+    if (name !== "price") {
+      allFilters[name] = value.trim();
+      setFilters(allFilters);
+    }
+
     const { data } = await Api(
       "get",
-      `/api/vendors/filtered-vendors?price=${
-        name === "price" ? value.trim() : price
+      `/api/vendors/filtered-vendors?upper_range=${
+        name === "price" ? upper_range : price
+      }&lower_range=${
+        name === "price" ? lower_range : lower_price
       }&is_delivering=${
         name === "is_delivering" ? value.trim() : is_delivering
       }&dine_in_options=${

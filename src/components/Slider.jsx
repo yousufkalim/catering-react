@@ -50,6 +50,7 @@ const Slider = ({ name }) => {
         showThumbs={false}
         showStatus={false}
         showIndicators={false}
+        transitionTime={1000}
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
             <button
