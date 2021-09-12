@@ -8,11 +8,12 @@ import StarIcon from "@material-ui/icons/Star";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 
 // styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "450px",
     width: "450px",
   },
+  heading: { color: theme.palette.primary.dark, fontFamily: "TektonPro" },
   headingDiv: {
     display: "flex",
     justifyContent: "space-between",
@@ -20,18 +21,18 @@ const useStyles = makeStyles({
     marginBottom: "10px",
     "& button": {
       maxHeight: "30px",
-      backgroundColor: "black",
+      backgroundColor: theme.palette.primary.dark,
       color: "white",
       "&:hover": {
-        backgroundColor: "black",
+        backgroundColor: theme.palette.primary.dark,
         color: "white",
       },
     },
   },
   hr: {
     width: "80px",
-    border: "2px solid black",
-    background: "black",
+    border: `2px solid ${theme.palette.primary.dark}`,
+    background: theme.palette.primary.dark,
     marginBottom: "30px",
   },
   reviewList: {
@@ -53,7 +54,8 @@ const useStyles = makeStyles({
     marginLeft: "10px",
     marginBottom: "20px",
   },
-});
+  avatar: { backgroundColor: theme.palette.primary.dark },
+}));
 
 const ReviewModal = ({ ratings, handleOpenAddReview }) => {
   const classes = useStyles();
@@ -61,27 +63,30 @@ const ReviewModal = ({ ratings, handleOpenAddReview }) => {
   return (
     <div className={classes.container}>
       <div className={classes.headingDiv}>
-        <Typography variant="h4" style={{ fontFamily: "TektonPro" }}>
+        <Typography variant="h4" className={classes.heading}>
           <b>Ratings</b>
         </Typography>
-        <Button variant="contained" onClick={handleOpenAddReview}>
-          Add
-        </Button>
+        <Button onClick={handleOpenAddReview}>Add</Button>
       </div>
       <hr className={classes.hr} />
 
       <div className={classes.reviewList}>
         {ratings.map((rating) => (
           <div className={classes.review}>
-            <Avatar>{rating.username.substring(0, 1).toUpperCase()}</Avatar>
+            <Avatar className={classes.avatar}>
+              {rating.username.substring(0, 1).toUpperCase()}
+            </Avatar>
             <div className={classes.comment}>
               <Typography variant="body2" style={{ paddingLeft: "3px" }}>
                 <b>{rating.username}</b>
               </Typography>
               {[1, 2, 3, 4, 5].map((item) => {
                 if (rating.rating >= item) {
-                  return <StarIcon />;
-                } else return <StarBorderIcon />;
+                  return <StarIcon style={{ color: "rgb(255, 215, 0)" }} />;
+                } else
+                  return (
+                    <StarBorderIcon style={{ color: "rgb(255, 215, 0)" }} />
+                  );
               })}
               <Typography variant="body2" style={{ paddingLeft: "3px" }}>
                 {rating.comment}

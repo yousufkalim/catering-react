@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 
 // Styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   input: {
     "-webkit-width": "400px",
     "-webkit-border-color": "black",
@@ -30,16 +30,17 @@ const useStyles = makeStyles({
   },
   heading: {
     marginBottom: "20px",
+    color: theme.palette.primary.dark,
   },
   submit: {
     width: "100px",
     height: "40px",
-    backgroundColor: "#2D0D79",
+    backgroundColor: theme.palette.primary.dark,
     color: "white",
     border: "none",
     cursor: "pointer",
   },
-});
+}));
 
 const LoginForm = ({ data, handleChange, handleSubmit }) => {
   const classes = useStyles();

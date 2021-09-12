@@ -44,14 +44,13 @@ const useStyles = makeStyles((theme) => ({
   btn: {
     color: "white",
     maxHeight: "40px",
-    paddingRight: "20px",
-    paddingLeft: "20px",
-    marginTop: "100px",
+    padding: "20px",
+    marginTop: "90px",
     borderRadius: "10px",
-    backgroundColor: "black",
+    backgroundColor: theme.palette.primary.dark,
     "&:hover": {
       color: "white",
-      backgroundColor: "black",
+      backgroundColor: theme.palette.primary.dark,
     },
   },
   caterers: {

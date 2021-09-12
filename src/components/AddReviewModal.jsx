@@ -5,7 +5,7 @@ import Button from "@material-ui/core/Button";
 import StarsRating from "stars-rating";
 
 // styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "450px",
     width: "450px",
@@ -32,10 +32,10 @@ const useStyles = makeStyles({
   btn: {
     marginTop: "20px",
     width: "100%",
-    backgroundColor: "black",
+    backgroundColor: theme.palette.primary.dark,
     color: "white",
     "&:hover": {
-      backgroundColor: "black",
+      backgroundColor: theme.palette.primary.dark,
       color: "white",
     },
   },
@@ -45,7 +45,8 @@ const useStyles = makeStyles({
     color: "red",
     fontSize: "small",
   },
-});
+  heading: { color: theme.palette.primary.dark },
+}));
 
 const AddReviewModal = ({
   review,
@@ -77,6 +78,7 @@ const AddReviewModal = ({
     <div className={classes.container}>
       <Typography
         variant="h4"
+        className={classes.heading}
         style={{ fontFamily: "TektonPro", marginBottom: "20px" }}
       >
         <b>Add Rating</b>

@@ -18,6 +18,9 @@ const useStyles = makeStyles({
       marginTop: "0",
       fontSize: "16px",
     },
+    "&.MuiInputLabel-shrink": {
+      fontSize: "16px",
+    },
   },
   outlined: {
     height: "40px",

@@ -80,7 +80,7 @@ const Header = () => {
                 pathname !== "/login" &&
                 pathname !== "/profile"
                   ? { color: "white" }
-                  : { color: "black" }
+                  : { color: "#303f9f" }
               }
             >
               H-CATERING

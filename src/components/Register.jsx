@@ -12,13 +12,14 @@ import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   main: {
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
     marginTop: "30px",
   },
+  heading: { color: theme.palette.primary.dark },
   caption: { textAlign: "center", marginTop: "20px" },
   form: {
     marginTop: "30px",
@@ -56,7 +57,7 @@ const useStyles = makeStyles({
     height: "40px",
     marginTop: "20px",
     marginBottom: "20px",
-    backgroundColor: "#2D0D79",
+    backgroundColor: theme.palette.primary.dark,
     color: "white",
     border: "none",
     cursor: "pointer",
@@ -82,7 +83,7 @@ const useStyles = makeStyles({
       color: "gray",
     },
   },
-});
+}));
 
 const Register = ({
   data,
@@ -203,7 +204,7 @@ const Register = ({
 
   return (
     <div className={classes.main}>
-      <Typography variant="h3">
+      <Typography variant="h3" className={classes.heading}>
         {pathname === "/register" ? "Vendors Registration" : "Update Details"}
       </Typography>
 

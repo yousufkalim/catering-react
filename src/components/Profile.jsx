@@ -18,7 +18,7 @@ import Tooltip from "@material-ui/core/Tooltip";
 import { Store } from "../StoreContext";
 
 // styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   icons: {
     marginTop: "40px",
   },
@@ -36,11 +36,11 @@ const useStyles = makeStyles({
     alignItems: "center",
     textAlign: "center",
   },
-  heading: { marginBottom: "10px" },
+  heading: { marginBottom: "10px", color: theme.palette.primary.dark },
   text: { marginTop: "20px" },
   hr: {
-    backgroundColor: "black",
-    border: "1px solid black",
+    backgroundColor: theme.palette.primary.dark,
+    border: `1px solid ${theme.palette.primary.dark}`,
     width: "200px",
   },
   menu: {
@@ -77,12 +77,11 @@ const useStyles = makeStyles({
     fontSize: "16px",
     textAlign: "center",
   },
-});
+}));
 
 const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
   const classes = useStyles();
   const { user } = Store();
-  console.log(user);
 
   return (
     <>
@@ -166,7 +165,7 @@ const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
 
         <div className={classes.website}>
           <Typography variant="h4" className={classes.heading}>
-            <b>Website and Social medias</b>
+            <b>Website and Social Media</b>
           </Typography>
           <hr className={classes.hr} />
           <Typography variant="body1" className={classes.text}>

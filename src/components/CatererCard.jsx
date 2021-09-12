@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
     paddingRight: "20px",
     paddingLeft: "20px",
     borderRadius: "10px",
-    transitionProperty: "backgroundColor, color",
+    transitionProperty: "background-color, color",
     transitionDuration: "0.4s",
     "&:hover": {
       backgroundColor: theme.palette.primary.dark,
