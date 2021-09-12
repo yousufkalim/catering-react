@@ -117,11 +117,17 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
+  menu_image: {
+    marginTop: "25px",
+    borderRadius: "10px",
+    maxWidth: "500px",
+  },
 }));
 
 const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
   const classes = useStyles();
   const { user } = Store();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   return (
     <>
@@ -201,13 +207,18 @@ const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
             <b>Menu</b>
           </Typography>
           <hr className={classes.hr} />
-          <Button
+          {/* <Button
             variant="contained"
             className={classes.btn}
             onClick={handleMenuOpen}
           >
             See the menu
-          </Button>
+          </Button> */}
+          <img
+            src={`${baseUrl}/${vendor.menu_image}`}
+            alt="Menu"
+            className={classes.menu_image}
+          />
         </div>
 
         <div className={classes.website}>
