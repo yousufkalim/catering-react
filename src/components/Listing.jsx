@@ -16,6 +16,7 @@ import Grid from "@material-ui/core/Grid";
 import CatererCard from "./CatererCard";
 import { Store } from "../StoreContext";
 import AnchorLink from "react-anchor-link-smooth-scroll";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
@@ -58,6 +59,19 @@ const useStyles = makeStyles((theme) => ({
     padding: "40px",
     height: "100vh",
     overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      width: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "rgba(0,0,0,0)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      background: "#303f9f",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      background: "#303f9f",
+    },
   },
   mapBox: {
     height: "100vh",
@@ -88,6 +102,7 @@ const Listing = ({
   const vendorIcon = L.icon({ iconUrl: VendorMarker });
   const selecredVendorIcon = L.icon({ iconUrl: SelectedVendor });
   const { vendors: allVendors } = Store();
+  const matches = useMediaQuery("(max-width:960px)");
 
   return (
     <div>
@@ -118,6 +133,39 @@ const Listing = ({
         className={classes.cateringArea}
         id="caterersList"
       >
+        {matches && (
+          <Grid
+            item
+            xs={12}
+            md={7}
+            style={{ height: "100vh", width: "100%", overflow: "hidden" }}
+          >
+            <Map
+              center={[center.lat, center.lng]}
+              zoom={12}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[center.lat, center.lng]} icon={userIcon} />
+              {allVendors.length > 0 &&
+                allVendors.map((item) => (
+                  <Marker
+                    key={item._id}
+                    position={[item.address.lat, item.address.lng]}
+                    icon={
+                      selectedVendor === item._id
+                        ? selecredVendorIcon
+                        : vendorIcon
+                    }
+                    onClick={() => handleMarkerClick(item._id)}
+                  />
+                ))}
+            </Map>
+          </Grid>
+        )}
         <Grid item xs={12} md={5} className={classes.caterers}>
           <Typography
             variant="h4"
@@ -216,37 +264,39 @@ const Listing = ({
             )}
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={7}
-          style={{ height: "100vh", width: "100%", overflow: "hidden" }}
-        >
-          <Map
-            center={[center.lat, center.lng]}
-            zoom={12}
-            scrollWheelZoom={false}
+        {!matches && (
+          <Grid
+            item
+            xs={12}
+            md={7}
+            style={{ height: "100vh", width: "100%", overflow: "hidden" }}
           >
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[center.lat, center.lng]} icon={userIcon} />
-            {allVendors.length > 0 &&
-              allVendors.map((item) => (
-                <Marker
-                  key={item._id}
-                  position={[item.address.lat, item.address.lng]}
-                  icon={
-                    selectedVendor === item._id
-                      ? selecredVendorIcon
-                      : vendorIcon
-                  }
-                  onClick={() => handleMarkerClick(item._id)}
-                />
-              ))}
-          </Map>
-        </Grid>
+            <Map
+              center={[center.lat, center.lng]}
+              zoom={12}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[center.lat, center.lng]} icon={userIcon} />
+              {allVendors.length > 0 &&
+                allVendors.map((item) => (
+                  <Marker
+                    key={item._id}
+                    position={[item.address.lat, item.address.lng]}
+                    icon={
+                      selectedVendor === item._id
+                        ? selecredVendorIcon
+                        : vendorIcon
+                    }
+                    onClick={() => handleMarkerClick(item._id)}
+                  />
+                ))}
+            </Map>
+          </Grid>
+        )}
       </Grid>
     </div>
   );
