@@ -13,6 +13,11 @@ import {
   FacebookIcon,
   InstagramIcon,
   WebIcon,
+  ColoredAddress,
+  ColoredTruck,
+  ColoredMaxPeople,
+  ColoredCash,
+  ColoredRating,
 } from "../assets/images";
 import Tooltip from "@material-ui/core/Tooltip";
 import { Store } from "../StoreContext";
@@ -77,6 +82,41 @@ const useStyles = makeStyles((theme) => ({
     fontSize: "16px",
     textAlign: "center",
   },
+  addressIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredAddress})`,
+      },
+    },
+  },
+  truckIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredTruck})`,
+      },
+    },
+  },
+  maxPeopleIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredMaxPeople})`,
+      },
+    },
+  },
+  priceIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredCash})`,
+      },
+    },
+  },
+  ratingIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredRating})`,
+      },
+    },
+  },
 }));
 
 const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
@@ -95,7 +135,7 @@ const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
               arrow
               classes={{ tooltip: classes.tooltip }}
             >
-              <div>
+              <div className={classes.addressIconDiv}>
                 <img src={AddressIcon} alt="address" width="65px" />
                 <Typography variant="body1" className={classes.iconText}>
                   {vendor?.address?.label.substring(0, 20)}...
@@ -104,30 +144,37 @@ const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
             </Tooltip>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img
-              src={DeliveryIcon}
-              alt="address"
-              width="110px"
-              style={{ marginTop: "7px" }}
-            />
-            <Typography variant="body1" className={classes.iconText}>
-              {vendor.delivery_radius} Miles
-            </Typography>
+            <div className={classes.truckIconDiv}>
+              <img
+                src={DeliveryIcon}
+                alt="address"
+                width="110px"
+                style={{ marginTop: "7px" }}
+              />
+              <Typography variant="body1" className={classes.iconText}>
+                {vendor.delivery_radius} Miles
+              </Typography>
+            </div>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img src={MaxPeopleIcon} alt="address" width="82px" />
-            <Typography variant="body1" className={classes.iconText}>
-              Max {vendor.max_people_limit} People
-            </Typography>
+            <div className={classes.maxPeopleIconDiv}>
+              <img src={MaxPeopleIcon} alt="address" width="82px" />
+              <Typography variant="body1" className={classes.iconText}>
+                Max {vendor.max_people_limit} People
+              </Typography>
+            </div>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img src={CashIcon} alt="address" width="79px" />
-            <Typography variant="body1" className={classes.iconText}>
-              {vendor.price}$
-            </Typography>
+            <div className={classes.priceIconDiv}>
+              <img src={CashIcon} alt="address" width="79px" />
+              <Typography variant="body1" className={classes.iconText}>
+                {vendor.price}$
+              </Typography>
+            </div>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
             <div
+              className={classes.ratingIconDiv}
               onClick={user?._id !== vendorId ? handleReviewsOpen : () => {}}
               style={user?._id !== vendorId ? { cursor: "pointer" } : {}}
             >

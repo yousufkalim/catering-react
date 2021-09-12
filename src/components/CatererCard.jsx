@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
     borderRadius: "10px",
     transitionProperty: "background-color, color",
     transitionDuration: "0.4s",
+    "transition-timing-function": "linear",
     "&:hover": {
       backgroundColor: theme.palette.primary.dark,
       color: "white",
