@@ -7,6 +7,7 @@ import {
   SliderImage2,
   NextIcon,
   PrevIcon,
+  HeroImg,
 } from "../assets/images";
 
 const useStyles = makeStyles({
@@ -35,7 +36,7 @@ const useStyles = makeStyles({
   },
 });
 
-const Slider = ({ name }) => {
+const Slider = ({ name, home, details }) => {
   const classes = useStyles();
 
   return (
@@ -50,6 +51,7 @@ const Slider = ({ name }) => {
         showThumbs={false}
         showStatus={false}
         showIndicators={false}
+        transitionTime={1000}
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
             <button
@@ -57,7 +59,7 @@ const Slider = ({ name }) => {
               onClick={onClickHandler}
               title={label}
               className={classes.arrows}
-              style={{ left: 15 }}
+              style={home ? { display: "none" } : { left: 15 }}
             >
               <img
                 src={PrevIcon}
@@ -75,7 +77,7 @@ const Slider = ({ name }) => {
               onClick={onClickHandler}
               title={label}
               className={classes.arrows}
-              style={{ right: 15 }}
+              style={home ? { display: "none" } : { right: 15 }}
             >
               <img
                 src={NextIcon}
@@ -88,18 +90,32 @@ const Slider = ({ name }) => {
         }
       >
         <div>
-          <img src={SliderImage1} alt="img1" className={classes.img} />
+          <img
+            src={HeroImg}
+            alt="img1"
+            className={classes.img}
+            style={home ? { height: "100vh" } : {}}
+          />
         </div>
         <div>
-          <img src={SliderImage2} alt="img2" className={classes.img} />
+          <img
+            src={SliderImage2}
+            alt="img2"
+            className={classes.img}
+            style={home ? { height: "100vh" } : {}}
+          />
+        </div>
+        <div>
+          <img
+            src={SliderImage1}
+            alt="img3"
+            className={classes.img}
+            style={home ? { height: "100vh" } : {}}
+          />
         </div>
       </Carousel>
 
-      <div className={classes.headingDiv}>
-        <Typography variant="h3">
-          <b>{name?.toUpperCase()}</b>
-        </Typography>
-      </div>
+      <div className={classes.headingDiv}>{details}</div>
     </div>
   );
 };

@@ -3,21 +3,24 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { toast } from "react-toastify";
-import axios from "axios";
+// import axios from "axios";
 
 // Importing Components
 import Header from "../components/Header";
 import Listing from "../components/Listing";
 import Footer from "../components/Footer";
+import Slider from "../components/Slider";
 import Api from "../api/index";
 import { UpdateStore, Store } from "../StoreContext";
 import TransitionsModal from "../components/TransitionsModal";
 import LocationMdoal from "../components/LocationModal";
+import { Button } from "@material-ui/core";
+import AnchorLink from "react-anchor-link-smooth-scroll";
 
 // Styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: { position: "relative" },
-  header: { position: "absolute", top: 0, zIndex: 1000, width: "100%" },
+  header: { position: "absolute", top: 0, zIndex: 1, width: "100%" },
   footNoteBtn: { marginLeft: "10px", color: "lightBlue", cursor: "pointer" },
   footNote: {
     position: "fixed",
@@ -29,7 +32,21 @@ const useStyles = makeStyles({
     color: "white",
     textAlign: "center",
   },
-});
+  slider: { overflow: "hidden" },
+  btn: {
+    color: "white",
+    maxHeight: "40px",
+    padding: "20px",
+    marginTop: "70px",
+    borderRadius: "10px",
+    backgroundColor: theme.palette.primary.dark,
+    "&:hover": {
+      color: "white",
+      backgroundColor: theme.palette.primary.dark,
+    },
+  },
+  subtitle: { marginTop: "30px" },
+}));
 
 // Home Component
 export default function Home() {
@@ -51,10 +68,11 @@ export default function Home() {
     is_delivering: "",
     dine_in_options: "",
     restaurant_type: "",
+    lower_price: "",
   });
   const updateStore = UpdateStore();
   const { vendors: allVendors } = Store();
-  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
+  // const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   useEffect(() => {
     getUserLocation();
@@ -96,6 +114,7 @@ export default function Home() {
     );
   };
 
+  // Getting filtered vendors from DB on Mounting
   const getFilteredVendors = async ({ lat, lng }) => {
     const { price, is_delivering, dine_in_options, restaurant_type } = filters;
     const { data } = await Api(
@@ -107,6 +126,7 @@ export default function Home() {
     setVendors(data.vendors.slice(0, pageSize));
   };
 
+  // Handler for CLicking on the markers on map
   const handleMarkerClick = (_id) => {
     setSelectedVendor(_id);
     let localVendors = [...allVendors];
@@ -120,17 +140,57 @@ export default function Home() {
     setVendors(localVendors.slice(0, 10));
   };
 
+  // Handling filter change
   const handleFilterChange = async ({ target }) => {
-    const { price, is_delivering, dine_in_options, restaurant_type } = filters;
+    const {
+      lower_price,
+      price,
+      is_delivering,
+      dine_in_options,
+      restaurant_type,
+    } = filters;
     const { name, value } = target;
     const allFilters = { ...filters };
+    let lower_range = "",
+      upper_range = "";
 
-    allFilters[name] = value.trim();
-    setFilters(allFilters);
+    if (name === "price") {
+      if (value.trim().length < 1) {
+        allFilters.price = "";
+        allFilters.lower_price = "";
+      }
+      if (value.trim() === "500") {
+        allFilters.lower_price = 0;
+        allFilters.price = 500;
+        lower_range = 0;
+        upper_range = 500;
+      }
+      if (value.trim() === "1000") {
+        allFilters.lower_price = 500;
+        allFilters.price = 1000;
+        lower_range = 500;
+        upper_range = 1000;
+      }
+      if (value.trim() === "2000") {
+        allFilters.lower_price = 1000;
+        allFilters.price = 2000;
+        lower_range = 1000;
+        upper_range = 2000;
+      }
+      setFilters(allFilters);
+    }
+
+    if (name !== "price") {
+      allFilters[name] = value.trim();
+      setFilters(allFilters);
+    }
+
     const { data } = await Api(
       "get",
-      `/api/vendors/filtered-vendors?price=${
-        name === "price" ? value.trim() : price
+      `/api/vendors/filtered-vendors?upper_range=${
+        name === "price" ? upper_range : price
+      }&lower_range=${
+        name === "price" ? lower_range : lower_price
       }&is_delivering=${
         name === "is_delivering" ? value.trim() : is_delivering
       }&dine_in_options=${
@@ -149,6 +209,7 @@ export default function Home() {
     setVendors(allVendors.slice(0, pageSize + 10));
   };
 
+  // Getting all Addresses
   const handleGetAddress = async ({ target }) => {
     // delete axios.defaults.headers.common["x-auth-token"];
     // const { data } = await axios.get(
@@ -164,6 +225,7 @@ export default function Home() {
     setAllAddresses(data.places);
   };
 
+  // Handling Address Change
   const handleAddressChange = async ({ target }) => {
     if (target.textContent) {
       const index = allAddresses.findIndex(
@@ -183,6 +245,7 @@ export default function Home() {
     }
   };
 
+  // On Submit handler
   const handleSubmit = () => {
     if (address.label.length < 1) {
       toast.error("Select Address or enable location");
@@ -205,10 +268,41 @@ export default function Home() {
     }
   };
 
+  // Function for rendering the content on slider
+  const renderSliderContent = () => {
+    return (
+      <div style={{ textAlign: "center" }} id="text-animation">
+        <Typography variant="h2">
+          <b>Find your caterer easily</b>
+        </Typography>
+
+        <Typography variant="h5" className={classes.subtitle}>
+          <em>Listing of the Halal vendors in your area</em>
+        </Typography>
+
+        <Button variant="contained" className={classes.btn}>
+          <AnchorLink
+            href="#caterersList"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            See the Options
+          </AnchorLink>
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.header}>
         <Header />
+      </div>
+      <div className={classes.slider}>
+        <Slider
+          name={"vendor.company_name"}
+          home={true}
+          details={renderSliderContent()}
+        />
       </div>
       <div>
         <Listing

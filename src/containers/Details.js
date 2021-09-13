@@ -2,6 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
+import { Typography } from "@material-ui/core";
+import Joi from "joi-browser";
+import publicIp from "public-ip";
 
 // Importing Components
 import Header from "../components/Header";
@@ -13,8 +16,7 @@ import TransitionsModal from "../components/TransitionsModal";
 import MenuModal from "../components/MenuModal";
 import ReviewModal from "../components/ReviewModal";
 import AddReviewModal from "../components/AddReviewModal";
-import Joi from "joi-browser";
-import publicIp from "public-ip";
+import { validate, validateProperty } from "../utils/joiFunctions";
 
 // styles
 const useStyles = makeStyles({
@@ -27,6 +29,7 @@ const useStyles = makeStyles({
 
 // Home Component
 export default function Details() {
+  // States
   const classes = useStyles();
   const [vendor, setVendor] = useState({});
   const [reviews, setReviews] = useState([]);
@@ -38,16 +41,19 @@ export default function Details() {
     comment: "",
   });
   const [errors, setErrors] = useState({});
-  const [ratingValue, setRatingValue] = useState(1);
+  const [ratingValue, setRatingValue] = useState(5);
 
   const { id } = useParams();
 
+  // Functions for handling Menu image Modal
   const handleOpenMenu = () => setOpenMenu(true);
   const handleCloseMenu = () => setOpenMenu(false);
 
+  // Functions for handling Ratings modal
   const handleOpenReviews = () => setOpenReviews(true);
   const handleCloseReviews = () => setOpenReviews(false);
 
+  // Functions for handling add Ratings modal
   const handleOpenAddReview = () => {
     setOpenReviews(false);
     setAddReviews(true);
@@ -60,9 +66,10 @@ export default function Details() {
       comment: "",
     });
     setErrors({});
-    setRatingValue(1);
+    setRatingValue(5);
   };
 
+  // Getting vendor according to params id on mounting
   const getVendor = async () => {
     const { data } = await Api("get", `/api/vendors/${id}`);
     setVendor(data.vendor);
@@ -73,31 +80,13 @@ export default function Details() {
     getVendor();
   }, []);
 
+  // Scehma for reviews
   const reviewSchema = {
     username: Joi.string().min(3).required().label("Username"),
     comment: Joi.string().min(6).required().label("Comment"),
   };
 
-  const validateProperty = (name, value, Schema) => {
-    const obj = { [name]: value };
-    const schema = {
-      [name]: Schema[name],
-    };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const options = { abortEarly: false };
-    let errors = {};
-    const result = Joi.validate(review, reviewSchema, options);
-    if (!result.error) return null;
-    for (let item of result.error.details) {
-      errors[item.path] = item.message;
-    }
-    return errors;
-  };
-
+  // Reviews handle change function
   const handleChange = ({ target }) => {
     const { name, value } = target;
     const allErrors = { ...errors };
@@ -111,12 +100,14 @@ export default function Details() {
     setReview(formData);
   };
 
+  // Rating number change function
   const handleRatingChange = (newRating) => setRatingValue(newRating);
 
+  // On Submit handler
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    let errors = validate();
+    let errors = validate(review, reviewSchema);
     setErrors(errors || {});
     if (errors) return;
 
@@ -133,7 +124,7 @@ export default function Details() {
 
     allReviews.unshift(data.review);
     setReviews(allReviews);
-    
+
     localVendor.ratings.push(data.review);
     let final_rating = 0;
     localVendor.ratings.forEach((item) => {
@@ -152,10 +143,17 @@ export default function Details() {
         <Header />
       </div>
       <div className={classes.slider}>
-        <Slider name={vendor.company_name} />
+        <Slider
+          details={
+            <Typography variant="h3" id="text-animation">
+              <b>{vendor.company_name?.toUpperCase()}</b>
+            </Typography>
+          }
+        />
       </div>
       <Profile
         vendor={vendor}
+        vendorId={id}
         handleMenuOpen={handleOpenMenu}
         handleReviewsOpen={handleOpenReviews}
       />

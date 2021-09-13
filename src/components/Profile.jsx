@@ -13,11 +13,17 @@ import {
   FacebookIcon,
   InstagramIcon,
   WebIcon,
+  ColoredAddress,
+  ColoredTruck,
+  ColoredMaxPeople,
+  ColoredCash,
+  ColoredRating,
 } from "../assets/images";
 import Tooltip from "@material-ui/core/Tooltip";
+import { Store } from "../StoreContext";
 
 // styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   icons: {
     marginTop: "40px",
   },
@@ -35,11 +41,11 @@ const useStyles = makeStyles({
     alignItems: "center",
     textAlign: "center",
   },
-  heading: { marginBottom: "10px" },
+  heading: { marginBottom: "10px", color: theme.palette.primary.dark },
   text: { marginTop: "20px" },
   hr: {
-    backgroundColor: "black",
-    border: "1px solid black",
+    backgroundColor: theme.palette.primary.dark,
+    border: `1px solid ${theme.palette.primary.dark}`,
     width: "200px",
   },
   menu: {
@@ -76,10 +82,53 @@ const useStyles = makeStyles({
     fontSize: "16px",
     textAlign: "center",
   },
-});
+  addressIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredAddress})`,
+      },
+    },
+  },
+  truckIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredTruck})`,
+      },
+    },
+  },
+  maxPeopleIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredMaxPeople})`,
+      },
+    },
+  },
+  priceIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredCash})`,
+      },
+    },
+  },
+  ratingIconDiv: {
+    "&:hover": {
+      "& img": {
+        content: `url(${ColoredRating})`,
+      },
+    },
+  },
+  menu_image: {
+    marginTop: "25px",
+    borderRadius: "10px",
+    maxWidth: "500px",
+    cursor: "pointer",
+  },
+}));
 
-const Profile = ({ vendor, handleMenuOpen, handleReviewsOpen }) => {
+const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
   const classes = useStyles();
+  const { user } = Store();
+  const baseUrl = process.env.REACT_APP_BASE_URL;
 
   return (
     <>
@@ -93,7 +142,7 @@ const Profile = ({ vendor, handleMenuOpen, handleReviewsOpen }) => {
               arrow
               classes={{ tooltip: classes.tooltip }}
             >
-              <div>
+              <div className={classes.addressIconDiv}>
                 <img src={AddressIcon} alt="address" width="65px" />
                 <Typography variant="body1" className={classes.iconText}>
                   {vendor?.address?.label.substring(0, 20)}...
@@ -102,30 +151,40 @@ const Profile = ({ vendor, handleMenuOpen, handleReviewsOpen }) => {
             </Tooltip>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img
-              src={DeliveryIcon}
-              alt="address"
-              width="110px"
-              style={{ marginTop: "7px" }}
-            />
-            <Typography variant="body1" className={classes.iconText}>
-              {vendor.delivery_radius} Miles
-            </Typography>
+            <div className={classes.truckIconDiv}>
+              <img
+                src={DeliveryIcon}
+                alt="address"
+                width="110px"
+                style={{ marginTop: "7px" }}
+              />
+              <Typography variant="body1" className={classes.iconText}>
+                {vendor.delivery_radius} Miles
+              </Typography>
+            </div>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img src={MaxPeopleIcon} alt="address" width="82px" />
-            <Typography variant="body1" className={classes.iconText}>
-              Max {vendor.max_people_limit} People
-            </Typography>
+            <div className={classes.maxPeopleIconDiv}>
+              <img src={MaxPeopleIcon} alt="address" width="82px" />
+              <Typography variant="body1" className={classes.iconText}>
+                Max {vendor.max_people_limit} People
+              </Typography>
+            </div>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <img src={CashIcon} alt="address" width="79px" />
-            <Typography variant="body1" className={classes.iconText}>
-              {vendor.price}$
-            </Typography>
+            <div className={classes.priceIconDiv}>
+              <img src={CashIcon} alt="address" width="79px" />
+              <Typography variant="body1" className={classes.iconText}>
+                {vendor.price}$
+              </Typography>
+            </div>
           </Grid>
           <Grid item xs={12} md={2} className={classes.iconDiv}>
-            <div onClick={handleReviewsOpen} style={{ cursor: "pointer" }}>
+            <div
+              className={classes.ratingIconDiv}
+              onClick={user?._id !== vendorId ? handleReviewsOpen : () => {}}
+              style={user?._id !== vendorId ? { cursor: "pointer" } : {}}
+            >
               <img src={RatingIcon} alt="address" width="89px" />
               <Typography variant="body1" className={classes.iconText}>
                 {vendor.final_rating} ({vendor?.ratings?.length} reviews)
@@ -149,18 +208,18 @@ const Profile = ({ vendor, handleMenuOpen, handleReviewsOpen }) => {
             <b>Menu</b>
           </Typography>
           <hr className={classes.hr} />
-          <Button
-            variant="contained"
-            className={classes.btn}
+
+          <img
+            src={`${baseUrl}/${vendor.menu_image}`}
+            alt="Menu"
+            className={classes.menu_image}
             onClick={handleMenuOpen}
-          >
-            See the menu
-          </Button>
+          />
         </div>
 
         <div className={classes.website}>
           <Typography variant="h4" className={classes.heading}>
-            <b>Website and Social medias</b>
+            <b>Website and Social Media</b>
           </Typography>
           <hr className={classes.hr} />
           <Typography variant="body1" className={classes.text}>

@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
-import axios from "axios";
+// import axios from "axios";
 import { toast } from "react-toastify";
 
 // Importing Components
 import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
+import { validate, validateProperty } from "../utils/joiFunctions";
 
 // Home Component
 export default function Profile() {
@@ -27,10 +28,14 @@ export default function Profile() {
     delivery_radius: "",
     is_delivering: "",
     dine_in_options: "",
+    new_password: "",
+    old_password: "",
   });
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
+  const [imageBlob, setImageBlob] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
+  const [menuImageBlob, setMenuImageBlob] = useState(null);
   const [allAddresses, setAllAddresses] = useState([]);
   const [address, setAddress] = useState({
     label: "",
@@ -40,7 +45,8 @@ export default function Profile() {
   const [inputValue, setInputValue] = useState("");
   const [addressValue, setAddressValue] = useState("");
   const history = useHistory();
-  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
+  const baseUrl = process.env.REACT_APP_BASE_URL;
+  // const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   useEffect(() => {
     checkingAuth();
@@ -63,6 +69,8 @@ export default function Profile() {
       delivery_radius: data.user.delivery_radius,
       is_delivering: data.user.is_delivering ? "true" : "false",
       dine_in_options: data.user.dine_in_options ? "true" : "false",
+      new_password: "",
+      old_password: "",
     });
     setFoodType(data.user.food_type);
     setAddress({
@@ -79,6 +87,8 @@ export default function Profile() {
         },
       },
     });
+    setImageBlob(`${baseUrl}/${data.user.image}`);
+    setMenuImageBlob(`${baseUrl}/${data.user.image}`);
   };
 
   const vendorSchema = {
@@ -96,8 +106,6 @@ export default function Profile() {
       .required()
       .uri({ allowQuerySquareBrackets: true })
       .label("Instagram Link"),
-    // new_password: Joi.string().min(5).required().label("New Password"),
-    // old_password: Joi.string().min(5).required().label("Old Password"),
     description: Joi.string().min(5).required().label("Description"),
     price: Joi.number().greater(0).required().label("Price"),
     max_people_limit: Joi.number()
@@ -111,26 +119,8 @@ export default function Profile() {
       .greater(0)
       .required()
       .label("Delivery Radius"),
-  };
-
-  const validateProperty = (name, value, Schema) => {
-    const obj = { [name]: value };
-    const schema = {
-      [name]: Schema[name],
-    };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const options = { abortEarly: false };
-    let errors = {};
-    const result = Joi.validate(vendorData, vendorSchema, options);
-    if (!result.error) return null;
-    for (let item of result.error.details) {
-      errors[item.path] = item.message;
-    }
-    return errors;
+    new_password: Joi.string().allow("").min(5).label("New Password"),
+    old_password: Joi.string().allow("").min(5).label("Old Password"),
   };
 
   const handleChange = ({ target }) => {
@@ -166,14 +156,20 @@ export default function Profile() {
     const { name, files } = target;
     if (name === "menu_image") {
       setMenuImage(files[0] !== undefined ? files[0] : null);
+      setMenuImageBlob(
+        files[0] !== undefined ? URL.createObjectURL(files[0]) : null
+      );
     } else {
       setImage(files[0] !== undefined ? files[0] : null);
+      setImageBlob(
+        files[0] !== undefined ? URL.createObjectURL(files[0]) : null
+      );
     }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let errors = validate();
+    let errors = validate(vendorData, vendorSchema);
     if (!errors && foodType.length < 1) {
       errors = {
         food_type: "Choose at least one Food Type",
@@ -201,6 +197,10 @@ export default function Profile() {
     Object.keys(body).forEach((item) => {
       fd.append(item, body[item]);
     });
+    // // old_password: "1234567",
+    // // new_password: "123456",
+    // fd.append("old_password", "123456");
+    // fd.append("new_password", "123456");
 
     Object.keys(localAddress).forEach((item) => {
       fd.append(`address.${item}`, localAddress[item]);
@@ -267,6 +267,8 @@ export default function Profile() {
         addresses={allAddresses}
         address={address}
         menuImage={menuImage}
+        menuImageBlob={menuImageBlob}
+        imageBlob={imageBlob}
         errors={errors}
         inputValue={inputValue}
         addressValue={addressValue}

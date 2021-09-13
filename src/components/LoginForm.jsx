@@ -1,45 +1,39 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import TextField from "@material-ui/core/TextField";
 
 // Styles
-const useStyles = makeStyles({
-  input: {
-    "-webkit-width": "400px",
-    "-webkit-border-color": "black",
-    border: "1px solid black",
-    width: "400px",
-    maxwidth: "400px",
-    height: "40px",
-    padding: "10px",
+const useStyles = makeStyles((theme) => ({
+  field: {
+    width: "100%",
     marginBottom: "20px",
     textAlign: "center",
-    "&:focus": {
-      border: "none",
-      outlineWidth: "2px",
-      outlineStyle: "solid",
-      outlineColor: "#3f51b5",
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#2662b1",
+      },
     },
-    "&::placeholder": { textAlign: "center" },
   },
+  input: { height: "50px" },
   container: {
     display: "flex",
     flexDirection: "column",
     justifyContent: "center",
     alignItems: "center",
+    maxWidth: "400px",
+    width: "400px",
   },
-  heading: {
-    marginBottom: "20px",
-  },
+  heading: { marginBottom: "20px", color: theme.palette.primary.dark },
   submit: {
     width: "100px",
     height: "40px",
-    backgroundColor: "#2D0D79",
+    backgroundColor: theme.palette.primary.dark,
     color: "white",
     border: "none",
     cursor: "pointer",
   },
-});
+}));
 
 const LoginForm = ({ data, handleChange, handleSubmit }) => {
   const classes = useStyles();
@@ -47,15 +41,24 @@ const LoginForm = ({ data, handleChange, handleSubmit }) => {
   const renderInput = (type, name, placeholder = "") => {
     return (
       <>
-        <input
+        <TextField
+          required
+          id={name}
+          label={name}
           type={type}
           name={name}
-          // value={data[name]}
+          variant="outlined"
+          value={data[name]}
           placeholder={placeholder}
-          className={classes.input}
+          className={classes.field}
+          InputLabelProps={{
+            shrink: true,
+          }}
+          InputProps={{
+            className: classes.input,
+          }}
           onChange={handleChange}
         />
-        {/* {errors[name] && <p className={classes.inputText}>{errors[name]}</p>} */}
       </>
     );
   };

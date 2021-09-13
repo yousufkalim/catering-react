@@ -3,49 +3,36 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import StarsRating from "stars-rating";
+import TextField from "@material-ui/core/TextField";
 
 // styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "450px",
     width: "450px",
-  },
-  input: {
-    "-webkit-width": "400px",
-    "-webkit-border-color": "black",
-    border: "1px solid black",
-    width: "100%",
-    maxwidth: "400px",
-    height: "40px",
-    padding: "10px",
-    marginBottom: "20px",
-    textAlign: "center",
-    "&:focus": {
-      border: "none",
-      outlineWidth: "2px",
-      outlineStyle: "solid",
-      outlineColor: "#3f51b5",
-    },
-    "&::placeholder": { textAlign: "center" },
   },
   ratingDiv: { display: "flex", justifyContent: "center" },
   btn: {
     marginTop: "20px",
     width: "100%",
-    backgroundColor: "black",
+    backgroundColor: theme.palette.primary.dark,
     color: "white",
     "&:hover": {
-      backgroundColor: "black",
+      backgroundColor: theme.palette.primary.dark,
       color: "white",
     },
   },
-  inputText: {
-    textAlign: "center",
+  heading: { color: theme.palette.primary.dark },
+  field: {
+    width: "100%",
     marginBottom: "20px",
-    color: "red",
-    fontSize: "small",
+    "& .MuiOutlinedInput-root": {
+      "&.Mui-focused fieldset": {
+        borderColor: "#2662b1",
+      },
+    },
   },
-});
+}));
 
 const AddReviewModal = ({
   review,
@@ -57,18 +44,24 @@ const AddReviewModal = ({
 }) => {
   const classes = useStyles();
 
+  // Function for rendering input fields
   const renderInput = (type, name, placeholder = "") => {
     return (
       <>
-        <input
+        <TextField
+          required
+          id={name}
+          label={placeholder}
           type={type}
           name={name}
+          variant="outlined"
           value={review[name]}
-          placeholder={placeholder}
-          className={classes.input}
+          className={classes.field}
           onChange={handleChange}
+          error={errors[name]}
+          helperText={errors[name]}
+          style={name === "delivery_radius" ? { maxWidth: "600px" } : {}}
         />
-        {errors[name] && <p className={classes.inputText}>{errors[name]}</p>}
       </>
     );
   };
@@ -77,6 +70,7 @@ const AddReviewModal = ({
     <div className={classes.container}>
       <Typography
         variant="h4"
+        className={classes.heading}
         style={{ fontFamily: "TektonPro", marginBottom: "20px" }}
       >
         <b>Add Rating</b>

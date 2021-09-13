@@ -3,62 +3,35 @@ import React from "react";
 import L from "leaflet";
 import { TileLayer, Marker, Map } from "react-leaflet";
 import MuiSelect from "./MuiSelect";
-import {
-  HeroImg,
-  UserMarker,
-  VendorMarker,
-  SelectedVendor,
-} from "../assets/images";
+import { UserMarker, VendorMarker, SelectedVendor } from "../assets/images";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import CatererCard from "./CatererCard";
 import { Store } from "../StoreContext";
-import AnchorLink from "react-anchor-link-smooth-scroll";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 // Styles
-const useStyles = makeStyles({
-  heroDiv: {
-    position: "relative",
-    height: "100vh",
-    background: `url('${HeroImg}')`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-  },
-  imgOverlay: {
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    backgroundColor: "rgba(0,0,0,0.6)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    color: "white",
-  },
-  subtitle: { marginTop: "30px" },
-  btn: {
-    color: "white",
-    maxHeight: "40px",
-    paddingRight: "20px",
-    paddingLeft: "20px",
-    marginTop: "100px",
-    borderRadius: "10px",
-    backgroundColor: "black",
-    "&:hover": {
-      color: "white",
-      backgroundColor: "black",
-    },
-  },
+const useStyles = makeStyles((theme) => ({
   caterers: {
     background: "#F9F9F9",
     padding: "40px",
     height: "100vh",
     overflowY: "scroll",
+    "&::-webkit-scrollbar": {
+      width: "10px",
+    },
+    "&::-webkit-scrollbar-track": {
+      background: "rgba(0,0,0,0)",
+    },
+    "&::-webkit-scrollbar-thumb": {
+      background: "#303f9f",
+      borderRadius: "10px",
+    },
+    "&::-webkit-scrollbar-thumb:hover": {
+      background: "#303f9f",
+    },
   },
   mapBox: {
     height: "100vh",
@@ -71,7 +44,8 @@ const useStyles = makeStyles({
     color: "black",
     marginTop: "10px",
   },
-});
+  catererHeading: { color: theme.palette.primary.dark },
+}));
 
 const Listing = ({
   center,
@@ -88,38 +62,57 @@ const Listing = ({
   const vendorIcon = L.icon({ iconUrl: VendorMarker });
   const selecredVendorIcon = L.icon({ iconUrl: SelectedVendor });
   const { vendors: allVendors } = Store();
+  const matches = useMediaQuery("(max-width:960px)");
 
   return (
     <div>
-      <div className={classes.heroDiv}>
-        <div className={classes.imgOverlay}>
-          <Typography variant="h2">
-            <b>Find your caterer easily</b>
-          </Typography>
-
-          <Typography variant="h5" className={classes.subtitle}>
-            <em>Listing of the Halal vendors in your area</em>
-          </Typography>
-
-          <Button variant="contained" className={classes.btn}>
-            <AnchorLink
-              href="#caterersList"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              See the Options
-            </AnchorLink>
-          </Button>
-        </div>
-      </div>
-
       <Grid
         container
         spacing={0}
         className={classes.cateringArea}
         id="caterersList"
+        style={matches ? { height: "auto" } : {}}
       >
+        {matches && (
+          <Grid
+            item
+            xs={12}
+            md={7}
+            style={{ height: "100vh", width: "100%", overflow: "hidden" }}
+          >
+            <Map
+              center={[center.lat, center.lng]}
+              zoom={12}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[center.lat, center.lng]} icon={userIcon} />
+              {allVendors.length > 0 &&
+                allVendors.map((item) => (
+                  <Marker
+                    key={item._id}
+                    position={[item.address.lat, item.address.lng]}
+                    icon={
+                      selectedVendor === item._id
+                        ? selecredVendorIcon
+                        : vendorIcon
+                    }
+                    onClick={() => handleMarkerClick(item._id)}
+                  />
+                ))}
+            </Map>
+          </Grid>
+        )}
         <Grid item xs={12} md={5} className={classes.caterers}>
-          <Typography variant="h4" style={{ marginBottom: "10px" }}>
+          <Typography
+            variant="h4"
+            // color="primary"
+            className={classes.catererHeading}
+            style={{ marginBottom: "10px" }}
+          >
             Caterers in DMV area
           </Typography>
           <Grid container spacing={2}>
@@ -147,9 +140,9 @@ const Listing = ({
                   value={filters["price"]}
                   handleChange={handleFilterChange}
                   data={[
-                    { _id: 1, value: "500", label: "500" },
-                    { _id: 2, value: "1000", label: "1000" },
-                    { _id: 3, value: "2000", label: "2000" },
+                    { _id: 1, value: "500", label: "0 - 500" },
+                    { _id: 2, value: "1000", label: "500 - 1000" },
+                    { _id: 3, value: "2000", label: "1000 - 2000" },
                   ]}
                 />
               </Grid>
@@ -211,37 +204,39 @@ const Listing = ({
             )}
           </Grid>
         </Grid>
-        <Grid
-          item
-          xs={12}
-          md={7}
-          style={{ height: "100vh", width: "100%", overflow: "hidden" }}
-        >
-          <Map
-            center={[center.lat, center.lng]}
-            zoom={12}
-            scrollWheelZoom={false}
+        {!matches && (
+          <Grid
+            item
+            xs={12}
+            md={7}
+            style={{ height: "100vh", width: "100%", overflow: "hidden" }}
           >
-            <TileLayer
-              attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            <Marker position={[center.lat, center.lng]} icon={userIcon} />
-            {allVendors.length > 0 &&
-              allVendors.map((item) => (
-                <Marker
-                  key={item._id}
-                  position={[item.address.lat, item.address.lng]}
-                  icon={
-                    selectedVendor === item._id
-                      ? selecredVendorIcon
-                      : vendorIcon
-                  }
-                  onClick={() => handleMarkerClick(item._id)}
-                />
-              ))}
-          </Map>
-        </Grid>
+            <Map
+              center={[center.lat, center.lng]}
+              zoom={12}
+              scrollWheelZoom={false}
+            >
+              <TileLayer
+                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              />
+              <Marker position={[center.lat, center.lng]} icon={userIcon} />
+              {allVendors.length > 0 &&
+                allVendors.map((item) => (
+                  <Marker
+                    key={item._id}
+                    position={[item.address.lat, item.address.lng]}
+                    icon={
+                      selectedVendor === item._id
+                        ? selecredVendorIcon
+                        : vendorIcon
+                    }
+                    onClick={() => handleMarkerClick(item._id)}
+                  />
+                ))}
+            </Map>
+          </Grid>
+        )}
       </Grid>
     </div>
   );

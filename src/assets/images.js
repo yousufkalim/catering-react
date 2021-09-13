@@ -15,6 +15,11 @@ import SelectedVendor from "./images/selectedVendor.png";
 import FacebookIcon from "./images/facebookIcon.png";
 import InstagramIcon from "./images/instagramIcon.png";
 import WebIcon from "./images/webIcon.png";
+import ColoredAddress from "./images/coloredAddress.png";
+import ColoredMaxPeople from "./images/coloredBank.png";
+import ColoredCash from "./images/coloredCash.png";
+import ColoredRating from "./images/coloredRating.png";
+import ColoredTruck from "./images/coloredTruck.png";
 
 export {
   SliderImage1,
@@ -34,4 +39,9 @@ export {
   FacebookIcon,
   InstagramIcon,
   WebIcon,
+  ColoredAddress,
+  ColoredMaxPeople,
+  ColoredCash,
+  ColoredRating,
+  ColoredTruck,
 };

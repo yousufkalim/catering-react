@@ -9,19 +9,23 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import StarIcon from "@material-ui/icons/Star";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   root: { minHeight: "330px" },
   btnArea: { display: "flex", justifyContent: "center" },
   btn: {
-    color: "white",
+    color: theme.palette.primary.dark,
+    border: `1px solid ${theme.palette.primary.dark}`,
+    backgroundColor: "transparent",
     maxHeight: "40px",
     paddingRight: "20px",
     paddingLeft: "20px",
     borderRadius: "10px",
-    backgroundColor: "black",
+    transitionProperty: "background-color, color",
+    transitionDuration: "0.4s",
+    "transition-timing-function": "linear",
     "&:hover": {
+      backgroundColor: theme.palette.primary.dark,
       color: "white",
-      backgroundColor: "black",
     },
   },
   cardHeading: {
@@ -41,7 +45,7 @@ const useStyles = makeStyles({
     color: "#F8CF46",
     marginLeft: "5px",
   },
-});
+}));
 
 const CatererCard = ({ vendor, selectedVendor }) => {
   const classes = useStyles();
@@ -54,7 +58,7 @@ const CatererCard = ({ vendor, selectedVendor }) => {
     >
       <CardMedia
         component="img"
-        alt="Contemplative Reptile"
+        alt="caterer"
         height="140"
         image={`${baseUrl}/${vendor.image}`}
         title="Contemplative Reptile"
@@ -85,12 +89,18 @@ const CatererCard = ({ vendor, selectedVendor }) => {
         </div>
 
         <Typography variant="body2" color="textSecondary" component="p">
-          {vendor.description}{" "}
+          {vendor.description.substring(0, 75)}
+          {vendor.description.length > 75 ? "..." : ""}
         </Typography>
       </CardContent>
       <CardActions className={classes.btnArea}>
         <Link to={`/vendor/${vendor._id}`} style={{ textDecoration: "none" }}>
-          <Button size="small" variant="contained" className={classes.btn}>
+          <Button
+            size="small"
+            // variant="contained"
+            className={classes.btn}
+            // color="primary"
+          >
             See Info
           </Button>
         </Link>

@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
+import FavoriteIcon from "@material-ui/icons/Favorite";
 
 const useStyles = makeStyles({
   container: {
@@ -10,7 +11,9 @@ const useStyles = makeStyles({
     paddingBottom: "20px",
   },
   text: { marginTop: "20px" },
-  copyright: { marginTop: "20px", textAlign: "center" },
+  tagline: { textAlign: "center", marginTop: "20px" },
+  copyright: { marginTop: "5px", textAlign: "center" },
+  heart: { color: "red", transform: "translateY(7px)" },
 });
 
 const Footer = () => {
@@ -26,8 +29,13 @@ const Footer = () => {
         business owners to promote their business.
       </Typography>
 
+      <Typography variant="body1" className={classes.tagline}>
+        Developed with love <FavoriteIcon className={classes.heart} /> for a
+        better web
+      </Typography>
+
       <Typography variant="body1" className={classes.copyright}>
-        Copyright 2021 - All rights reserved.
+        &#169; 2021 - Falcon IT Consulting.
       </Typography>
     </div>
   );
