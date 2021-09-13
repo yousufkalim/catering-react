@@ -20,40 +20,6 @@ import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 // Styles
 const useStyles = makeStyles((theme) => ({
-  heroDiv: {
-    position: "relative",
-    height: "100vh",
-    background: `url('${HeroImg}')`,
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-  },
-  imgOverlay: {
-    top: 0,
-    left: 0,
-    width: "100%",
-    height: "100%",
-    position: "absolute",
-    backgroundColor: "rgba(0,0,0,0.6)",
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "center",
-    alignItems: "center",
-    textAlign: "center",
-    color: "white",
-  },
-  subtitle: { marginTop: "30px" },
-  btn: {
-    color: "white",
-    maxHeight: "40px",
-    padding: "20px",
-    marginTop: "90px",
-    borderRadius: "10px",
-    backgroundColor: theme.palette.primary.dark,
-    "&:hover": {
-      color: "white",
-      backgroundColor: theme.palette.primary.dark,
-    },
-  },
   caterers: {
     background: "#F9F9F9",
     padding: "40px",
@@ -106,27 +72,6 @@ const Listing = ({
 
   return (
     <div>
-      <div className={classes.heroDiv}>
-        <div className={classes.imgOverlay}>
-          <Typography variant="h2">
-            <b>Find your caterer easily</b>
-          </Typography>
-
-          <Typography variant="h5" className={classes.subtitle}>
-            <em>Listing of the Halal vendors in your area</em>
-          </Typography>
-
-          <Button variant="contained" className={classes.btn}>
-            <AnchorLink
-              href="#caterersList"
-              style={{ textDecoration: "none", color: "white" }}
-            >
-              See the Options
-            </AnchorLink>
-          </Button>
-        </div>
-      </div>
-
       <Grid
         container
         spacing={0}

@@ -15,6 +15,7 @@ import ReviewModal from "../components/ReviewModal";
 import AddReviewModal from "../components/AddReviewModal";
 import Joi from "joi-browser";
 import publicIp from "public-ip";
+import { Typography } from "@material-ui/core";
 
 // styles
 const useStyles = makeStyles({
@@ -152,7 +153,13 @@ export default function Details() {
         <Header />
       </div>
       <div className={classes.slider}>
-        <Slider name={vendor.company_name} />
+        <Slider
+          details={
+            <Typography variant="h3" id="text-animation">
+              <b>{vendor.company_name?.toUpperCase()}</b>
+            </Typography>
+          }
+        />
       </div>
       <Profile
         vendor={vendor}

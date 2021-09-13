@@ -121,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "25px",
     borderRadius: "10px",
     maxWidth: "500px",
+    cursor: "pointer",
   },
 }));
 
@@ -218,6 +219,7 @@ const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
             src={`${baseUrl}/${vendor.menu_image}`}
             alt="Menu"
             className={classes.menu_image}
+            onClick={handleMenuOpen}
           />
         </div>
 

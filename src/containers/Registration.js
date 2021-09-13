@@ -25,7 +25,9 @@ export default function Registration() {
   const [addressValue, setAddressValue] = useState("");
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
+  const [imageBlob, setImageBlob] = useState(null);
   const [menuImage, setMenuImage] = useState(null);
+  const [menuImageBlob, setMenuImageBlob] = useState(null);
   const history = useHistory();
   const updateStore = UpdateStore();
   const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
@@ -116,8 +118,14 @@ export default function Registration() {
     const { name, files } = target;
     if (name === "menu_image") {
       setMenuImage(files[0] !== undefined ? files[0] : null);
+      setMenuImageBlob(
+        files[0] !== undefined ? URL.createObjectURL(files[0]) : null
+      );
     } else {
       setImage(files[0] !== undefined ? files[0] : null);
+      setImageBlob(
+        files[0] !== undefined ? URL.createObjectURL(files[0]) : null
+      );
     }
   };
 
@@ -232,6 +240,8 @@ export default function Registration() {
         addresses={allAddresses}
         address={address}
         menuImage={menuImage}
+        menuImageBlob={menuImageBlob}
+        imageBlob={imageBlob}
         errors={errors}
         inputValue={inputValue}
         addressValue={addressValue}

@@ -11,6 +11,8 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
+import Grid from "@material-ui/core/Grid";
+import BackupIcon from "@material-ui/icons/Backup";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -26,10 +28,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
     alignItems: "center",
+    maxWidth: "60vw",
   },
   field: {
     width: "100%",
-    marginBottom: "20px",
+    // marginBottom: "20px",
     textAlign: "center",
     "& .MuiOutlinedInput-root": {
       "&.Mui-focused fieldset": {
@@ -37,7 +40,7 @@ const useStyles = makeStyles((theme) => ({
       },
     },
   },
-  input: { height: "50px" },
+  // input: { height: "50px" },
   inputText: {
     marginBottom: "20px",
     color: "red",
@@ -60,19 +63,51 @@ const useStyles = makeStyles((theme) => ({
   },
   autoComplete: {
     width: "100%",
-    marginBottom: "10px",
+    marginTop: "10px",
   },
-  addressField: {
-    "& button": { marginTop: "-5px" },
-    "& fieldset": {
-      height: "50px",
-      border: "1px solid rgba(0,0,0,0.5)",
-    },
-    "& label": {
-      marginTop: "-4px",
-      fontSize: "14px",
-      color: "gray",
-    },
+  radioBtnGridItem: {
+    display: "flex",
+    justifyContent: "center",
+  },
+  // addressField: {
+  //   "& button": { marginTop: "-5px" },
+  //   "& fieldset": {
+  //     height: "50px",
+  //     border: "1px solid rgba(0,0,0,0.5)",
+  //   },
+  //   "& label": {
+  //     marginTop: "-4px",
+  //     fontSize: "14px",
+  //     color: "gray",
+  //   },
+  // },
+  imgDiv: {
+    height: "250px",
+    width: "220px",
+    backgroundColor: "lightgray",
+    borderRadius: "10px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  imgInput: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    top: 0,
+    opacity: 0,
+    cursor: "pointer",
+  },
+  blob: {
+    position: "absolute",
+    height: "100%",
+    width: "100%",
+    top: 0,
+    borderRadius: "10px",
+    cursor: "pointer",
+    objectFit: "cover",
   },
 }));
 
@@ -83,6 +118,8 @@ const Register = ({
   addresses,
   address,
   menuImage,
+  menuImageBlob,
+  imageBlob,
   errors,
   addressValue,
   inputValue,
@@ -120,6 +157,7 @@ const Register = ({
           onChange={handleChange}
           error={errors[name]}
           helperText={errors[name]}
+          style={name === "delivery_radius" ? { maxWidth: "600px" } : {}}
         />
       </>
     );
@@ -169,33 +207,24 @@ const Register = ({
 
   const renderInputBtn = (name, label, imageData) => {
     return (
-      <label htmlFor={name}>
+      <div className={classes.imgDiv}>
+        <Typography variant="subtitle1" style={{ textAlign: "center" }}>
+          {label} (PNG/JPG)
+        </Typography>
+        <BackupIcon className={classes.icon} />
+        <Typography variant="caption">Max Size 5MB</Typography>
+        {imageData && (
+          <img src={imageData} alt="profile" className={classes.blob} />
+        )}
         <input
-          style={{ display: "none" }}
-          id={name}
-          name={name}
           type="file"
+          name={name}
+          id={name}
           accept="image/png, image/jpeg"
+          className={classes.imgInput}
           onChange={handleImageChange}
         />
-
-        <Button
-          variant="contained"
-          component="span"
-          style={{ fontSize: "12px", background: "black", color: "white" }}
-          className={classes.uploadBtn}
-        >
-          {label}
-        </Button>
-        {imageData && (
-          <Typography
-            variant="body1"
-            style={{ textAlign: "center", marginTop: "5px" }}
-          >
-            {imageData.name}
-          </Typography>
-        )}
-      </label>
+      </div>
     );
   };
 
@@ -210,69 +239,121 @@ const Register = ({
         <br /> We will promote your business to the muslim community.
       </Typography>
       <div className={classes.form}>
-        {renderInput("text", "company_name", "Name of the company")}
-        <Autocomplete
-          value={addressValue}
-          inputValue={inputValue}
-          onInputChange={(event, newInputValue) =>
-            handleInputValue(newInputValue)
-          }
-          id="combo-box-demo"
-          options={addresses}
-          getOptionLabel={(option) => option.formatted_address}
-          classes={{ root: classes.autoComplete }}
-          onChange={(e) => handleAddressChange(e)}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              className={classes.addressField}
-              label="Address"
-              variant="outlined"
-              onChange={(e) => handleGetAddress(e)}
+        {/* Grid for input fields */}
+        <Grid container spacing={1} style={{ marginBottom: "20px" }}>
+          <Grid item xs={12} sm={6}>
+            {renderInput("text", "company_name", "Name of the company")}
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Autocomplete
+              value={addressValue}
+              inputValue={inputValue}
+              onInputChange={(event, newInputValue) =>
+                handleInputValue(newInputValue)
+              }
+              id="combo-box-demo"
+              options={addresses}
+              getOptionLabel={(option) => option.formatted_address}
+              classes={{ root: classes.autoComplete }}
+              onChange={(e) => handleAddressChange(e)}
+              renderInput={(params) => (
+                <TextField
+                  {...params}
+                  className={classes.addressField}
+                  label="Address"
+                  variant="outlined"
+                  onChange={(e) => handleGetAddress(e)}
+                />
+              )}
             />
+          </Grid>
+
+          {pathname === "/register" && (
+            <Grid item xs={12} sm={6}>
+              {renderInput("email", "email", "E-mail address")}{" "}
+            </Grid>
           )}
-        />
-        {renderInput("text", "phone", "Phone Number")}
-        {pathname === "/register" && (
-          <> {renderInput("email", "email", "E-mail address")} </>
-        )}
-        {renderInput("text", "website", "Website")}
-        {renderInput("text", "facebook_page", "Facebook Page")}
-        {renderInput("text", "instagram_page", "Instagram Page")}
-        {pathname === "/register" && (
-          <>
-            {renderInput("password", "password", "Password")}
-            {renderInput("password", "confirm_password", "Confirm Password")}
-          </>
-        )}
-        {/* {pathname === "/profile" && (
-          <>
-            {renderInput("password", "old_password", "Old Password")}
-            {renderInput("password", "new_password", "New Password")}
-          </>
-        )} */}
-        {renderInput("text", "description", "Description")}
-        {renderInput("number", "price", "Price")}
-        {renderInput("number", "max_people_limit", "Max People Limit")}
-        {renderRadioBtnWIthLabel("Type of Business:", "business_type", [
-          { value: "restaurant", label: "Restaurant" },
-          { value: "caterer", label: "Caterer" },
-        ])}
-        {renderRadioBtnWIthLabel("Do you provide delivery ?", "is_delivering", [
-          { value: "true", label: "Yes" },
-          { value: "false", label: "No" },
-        ])}
-        {renderRadioBtnWIthLabel("Dine In Options:", "dine_in_options", [
-          { value: "true", label: "Yes" },
-          { value: "false", label: "No" },
-        ])}
+
+          <Grid item xs={12} sm={6}>
+            {renderInput("text", "phone", "Phone Number")}
+          </Grid>
+
+          {pathname === "/register" && (
+            <>
+              <Grid item xs={12} sm={6}>
+                {renderInput("password", "password", "Password")}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {renderInput(
+                  "password",
+                  "confirm_password",
+                  "Confirm Password"
+                )}
+              </Grid>
+            </>
+          )}
+
+          <Grid item xs={12} sm={6}>
+            {renderInput("text", "description", "Description")}
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            {renderInput("text", "website", "Website")}
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            {renderInput("text", "facebook_page", "Facebook Page")}
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            {renderInput("text", "instagram_page", "Instagram Page")}
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            {renderInput("number", "price", "Price")}
+          </Grid>
+
+          <Grid item xs={12} sm={6}>
+            {renderInput("number", "max_people_limit", "Max People Limit")}
+          </Grid>
+        </Grid>
+
+        {/* Grid For radio buttons */}
+        <Grid container spacing={1} style={{ marginBottom: "20px" }}>
+          <Grid item xs={12} sm={4} className={classes.radioBtnGridItem}>
+            {renderRadioBtnWIthLabel("Type of Business:", "business_type", [
+              { value: "restaurant", label: "Restaurant" },
+              { value: "caterer", label: "Caterer" },
+            ])}
+          </Grid>
+
+          <Grid item xs={12} sm={4} className={classes.radioBtnGridItem}>
+            {renderRadioBtnWIthLabel("Dine In Options:", "dine_in_options", [
+              { value: "true", label: "Yes" },
+              { value: "false", label: "No" },
+            ])}
+          </Grid>
+
+          <Grid item xs={12} sm={4} className={classes.radioBtnGridItem}>
+            {renderRadioBtnWIthLabel(
+              "Do you provide delivery ?",
+              "is_delivering",
+              [
+                { value: "true", label: "Yes" },
+                { value: "false", label: "No" },
+              ]
+            )}
+          </Grid>
+        </Grid>
+
         {renderInput(
           "number",
           "delivery_radius",
           "Miles",
           "If yes, please be precise how far from your location:"
         )}
-        <Typography variant="body1">
+
+        <Typography variant="body1" style={{ marginTop: "20px" }}>
           <b>Type of food: </b>
         </Typography>
         <div style={{ display: "flex" }}>
@@ -304,8 +385,30 @@ const Register = ({
           <p className={classes.inputText}>{errors["food_type"]}</p>
         )}
 
-        {renderInputBtn("menu_image", "Upload Menu Image", menuImage)}
-        {renderInputBtn("image", "Upload Image", image)}
+        <Grid
+          container
+          spacing={2}
+          style={{ marginBottom: "20px", marginTop: "20px" }}
+        >
+          <Grid item xs={12} md={3} />
+          <Grid
+            item
+            xs={12}
+            md={3}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            {renderInputBtn("menu_image", "Upload Menu Image", menuImageBlob)}
+          </Grid>
+          <Grid
+            item
+            xs={12}
+            md={3}
+            style={{ display: "flex", justifyContent: "center" }}
+          >
+            {renderInputBtn("image", "Upload Image", imageBlob)}
+          </Grid>
+          <Grid item xs={12} md={3} />
+        </Grid>
 
         <button className={classes.submit} onClick={handleSubmit}>
           Submit

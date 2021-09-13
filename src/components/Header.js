@@ -50,7 +50,7 @@ const Header = () => {
   const { pathname } = useLocation();
   const { user } = Store();
   const updateStore = UpdateStore();
-  const userExists = Object.keys(user).length > 0 ? true : false;
+  const userExists = user && Object.keys(user).length > 0 ? true : false;
 
   const handleLogout = () => {
     localStorage.removeItem("token");

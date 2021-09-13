@@ -9,13 +9,16 @@ import axios from "axios";
 import Header from "../components/Header";
 import Listing from "../components/Listing";
 import Footer from "../components/Footer";
+import Slider from "../components/Slider";
 import Api from "../api/index";
 import { UpdateStore, Store } from "../StoreContext";
 import TransitionsModal from "../components/TransitionsModal";
 import LocationMdoal from "../components/LocationModal";
+import { Button } from "@material-ui/core";
+import AnchorLink from "react-anchor-link-smooth-scroll";
 
 // Styles
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: { position: "relative" },
   header: { position: "absolute", top: 0, zIndex: 1000, width: "100%" },
   footNoteBtn: { marginLeft: "10px", color: "lightBlue", cursor: "pointer" },
@@ -29,7 +32,21 @@ const useStyles = makeStyles({
     color: "white",
     textAlign: "center",
   },
-});
+  slider: { overflow: "hidden" },
+  btn: {
+    color: "white",
+    maxHeight: "40px",
+    padding: "20px",
+    marginTop: "70px",
+    borderRadius: "10px",
+    backgroundColor: theme.palette.primary.dark,
+    "&:hover": {
+      color: "white",
+      backgroundColor: theme.palette.primary.dark,
+    },
+  },
+  subtitle: { marginTop: "30px" },
+}));
 
 // Home Component
 export default function Home() {
@@ -245,10 +262,40 @@ export default function Home() {
     }
   };
 
+  const renderSliderContent = () => {
+    return (
+      <div style={{ textAlign: "center" }} id="text-animation">
+        <Typography variant="h2">
+          <b>Find your caterer easily</b>
+        </Typography>
+
+        <Typography variant="h5" className={classes.subtitle}>
+          <em>Listing of the Halal vendors in your area</em>
+        </Typography>
+
+        <Button variant="contained" className={classes.btn}>
+          <AnchorLink
+            href="#caterersList"
+            style={{ textDecoration: "none", color: "white" }}
+          >
+            See the Options
+          </AnchorLink>
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <div className={classes.container}>
       <div className={classes.header}>
         <Header />
+      </div>
+      <div className={classes.slider}>
+        <Slider
+          name={"vendor.company_name"}
+          home={true}
+          details={renderSliderContent()}
+        />
       </div>
       <div>
         <Listing

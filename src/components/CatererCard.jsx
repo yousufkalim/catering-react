@@ -58,7 +58,7 @@ const CatererCard = ({ vendor, selectedVendor }) => {
     >
       <CardMedia
         component="img"
-        alt="Contemplative Reptile"
+        alt="caterer"
         height="140"
         image={`${baseUrl}/${vendor.image}`}
         title="Contemplative Reptile"
