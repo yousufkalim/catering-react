@@ -8,7 +8,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormControl from "@material-ui/core/FormControl";
 import FormLabel from "@material-ui/core/FormLabel";
 import Checkbox from "@material-ui/core/Checkbox";
-import Button from "@material-ui/core/Button";
 import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Grid from "@material-ui/core/Grid";
@@ -69,18 +68,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     justifyContent: "center",
   },
-  // addressField: {
-  //   "& button": { marginTop: "-5px" },
-  //   "& fieldset": {
-  //     height: "50px",
-  //     border: "1px solid rgba(0,0,0,0.5)",
-  //   },
-  //   "& label": {
-  //     marginTop: "-4px",
-  //     fontSize: "14px",
-  //     color: "gray",
-  //   },
-  // },
   imgDiv: {
     height: "250px",
     width: "220px",

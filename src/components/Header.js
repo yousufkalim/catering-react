@@ -52,14 +52,17 @@ const Header = () => {
   const updateStore = UpdateStore();
   const userExists = user && Object.keys(user).length > 0 ? true : false;
 
+  // Log out user function
   const handleLogout = () => {
     localStorage.removeItem("token");
     updateStore({ user: {} });
     window.location = "/";
   };
 
+  // States
   const [menu, setMenu] = useState(null);
 
+  // Menu handlers for smaller screens
   const handleClick = (event) => setMenu(event.currentTarget);
   const handleClose = () => setMenu(null);
 

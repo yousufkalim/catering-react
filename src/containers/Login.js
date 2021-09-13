@@ -32,11 +32,13 @@ export default function Login() {
     password: "",
   });
 
+  // Input field handle Change
   const handleChange = async ({ target }) => {
     const { name, value } = target;
     setFormData({ ...formData, [name]: value });
   };
 
+  // On submit function
   const handleSubmit = async () => {
     const { email, password } = formData;
     if (email.length < 1) {

@@ -3,19 +3,13 @@ import React from "react";
 import L from "leaflet";
 import { TileLayer, Marker, Map } from "react-leaflet";
 import MuiSelect from "./MuiSelect";
-import {
-  HeroImg,
-  UserMarker,
-  VendorMarker,
-  SelectedVendor,
-} from "../assets/images";
+import { UserMarker, VendorMarker, SelectedVendor } from "../assets/images";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import Grid from "@material-ui/core/Grid";
 import CatererCard from "./CatererCard";
 import { Store } from "../StoreContext";
-import AnchorLink from "react-anchor-link-smooth-scroll";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 // Styles

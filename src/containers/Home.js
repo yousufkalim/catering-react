@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { toast } from "react-toastify";
-import axios from "axios";
+// import axios from "axios";
 
 // Importing Components
 import Header from "../components/Header";
@@ -72,7 +72,7 @@ export default function Home() {
   });
   const updateStore = UpdateStore();
   const { vendors: allVendors } = Store();
-  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
+  // const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   useEffect(() => {
     getUserLocation();
@@ -114,6 +114,7 @@ export default function Home() {
     );
   };
 
+  // Getting filtered vendors from DB on Mounting
   const getFilteredVendors = async ({ lat, lng }) => {
     const { price, is_delivering, dine_in_options, restaurant_type } = filters;
     const { data } = await Api(
@@ -125,6 +126,7 @@ export default function Home() {
     setVendors(data.vendors.slice(0, pageSize));
   };
 
+  // Handler for CLicking on the markers on map
   const handleMarkerClick = (_id) => {
     setSelectedVendor(_id);
     let localVendors = [...allVendors];
@@ -138,6 +140,7 @@ export default function Home() {
     setVendors(localVendors.slice(0, 10));
   };
 
+  // Handling filter change
   const handleFilterChange = async ({ target }) => {
     const {
       lower_price,
@@ -206,6 +209,7 @@ export default function Home() {
     setVendors(allVendors.slice(0, pageSize + 10));
   };
 
+  // Getting all Addresses
   const handleGetAddress = async ({ target }) => {
     // delete axios.defaults.headers.common["x-auth-token"];
     // const { data } = await axios.get(
@@ -221,6 +225,7 @@ export default function Home() {
     setAllAddresses(data.places);
   };
 
+  // Handling Address Change
   const handleAddressChange = async ({ target }) => {
     if (target.textContent) {
       const index = allAddresses.findIndex(
@@ -240,6 +245,7 @@ export default function Home() {
     }
   };
 
+  // On Submit handler
   const handleSubmit = () => {
     if (address.label.length < 1) {
       toast.error("Select Address or enable location");
@@ -262,6 +268,7 @@ export default function Home() {
     }
   };
 
+  // Function for rendering the content on slider
   const renderSliderContent = () => {
     return (
       <div style={{ textAlign: "center" }} id="text-animation">

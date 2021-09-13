@@ -1,18 +1,20 @@
 // Init
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
+// import axios from "axios";
+import { toast } from "react-toastify";
 
 // Importing Components
 import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
-import { toast } from "react-toastify";
-import axios from "axios";
 import { UpdateStore } from "../StoreContext";
+import { validate, validateProperty } from "../utils/joiFunctions";
 
 // Home Component
 export default function Registration() {
+  // States
   const [errors, setErrors] = useState({});
   const [registerData, setRegisterData] = useState({});
   const [allAddresses, setAllAddresses] = useState([]);
@@ -30,8 +32,9 @@ export default function Registration() {
   const [menuImageBlob, setMenuImageBlob] = useState(null);
   const history = useHistory();
   const updateStore = UpdateStore();
-  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
+  // const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
+  // JOI Schema for registration
   const registerSchema = {
     company_name: Joi.string().min(3).required().label("Company Name"),
     phone: Joi.string().max(25).required().label("Phone"),
@@ -65,26 +68,7 @@ export default function Registration() {
       .label("Delivery Radius"),
   };
 
-  const validateProperty = (name, value, Schema) => {
-    const obj = { [name]: value };
-    const schema = {
-      [name]: Schema[name],
-    };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const options = { abortEarly: false };
-    let errors = {};
-    const result = Joi.validate(registerData, registerSchema, options);
-    if (!result.error) return null;
-    for (let item of result.error.details) {
-      errors[item.path] = item.message;
-    }
-    return errors;
-  };
-
+  // Function for input fields onChange Event
   const handleChange = ({ target }) => {
     const { name, value } = target;
     const allErrors = { ...errors };
@@ -98,6 +82,7 @@ export default function Registration() {
     setRegisterData(formData);
   };
 
+  // Function for Food type change Event
   const handleFoodTypeChange = ({ target }) => {
     let types = [...foodType];
     const allErrors = { ...errors };
@@ -114,6 +99,7 @@ export default function Registration() {
     setFoodType(types);
   };
 
+  // Function for Image change Event
   const handleImageChange = ({ target }) => {
     const { name, files } = target;
     if (name === "menu_image") {
@@ -129,9 +115,10 @@ export default function Registration() {
     }
   };
 
+  // On Submit function
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let errors = validate();
+    let errors = validate(registerData, registerSchema);
     if (!errors && registerData.password !== registerData.confirm_password) {
       errors = {
         password: "Password does not match",
@@ -167,6 +154,7 @@ export default function Registration() {
     history.replace("/");
   };
 
+  // Mapping Data to form data function
   const mapToFormData = (body) => {
     const fd = new FormData();
     const localAddress = {
@@ -193,6 +181,7 @@ export default function Registration() {
     return fd;
   };
 
+  // Getting All Addresses function
   const handleGetAddress = async ({ target }) => {
     // delete axios.defaults.headers.common["x-auth-token"];
     // const { data } = await axios.get(
@@ -208,6 +197,7 @@ export default function Registration() {
     setAllAddresses(data.places);
   };
 
+  // Handle Address change function
   const handleAddressChange = async ({ target }) => {
     if (target.textContent) {
       const index = allAddresses.findIndex(
@@ -228,6 +218,7 @@ export default function Registration() {
     }
   };
 
+  // Setting the Inpput value for address field
   const handleInputValue = (value) => setInputValue(value);
 
   return (

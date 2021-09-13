@@ -208,13 +208,7 @@ const Profile = ({ vendor, vendorId, handleMenuOpen, handleReviewsOpen }) => {
             <b>Menu</b>
           </Typography>
           <hr className={classes.hr} />
-          {/* <Button
-            variant="contained"
-            className={classes.btn}
-            onClick={handleMenuOpen}
-          >
-            See the menu
-          </Button> */}
+
           <img
             src={`${baseUrl}/${vendor.menu_image}`}
             alt="Menu"

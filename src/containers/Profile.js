@@ -2,13 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { useHistory } from "react-router-dom";
 import Joi from "joi-browser";
-import axios from "axios";
+// import axios from "axios";
 import { toast } from "react-toastify";
 
 // Importing Components
 import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
+import { validate, validateProperty } from "../utils/joiFunctions";
 
 // Home Component
 export default function Profile() {
@@ -43,7 +44,7 @@ export default function Profile() {
   const [addressValue, setAddressValue] = useState("");
   const history = useHistory();
   const baseUrl = process.env.REACT_APP_BASE_URL;
-  const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
+  // const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
 
   useEffect(() => {
     checkingAuth();
@@ -101,8 +102,6 @@ export default function Profile() {
       .required()
       .uri({ allowQuerySquareBrackets: true })
       .label("Instagram Link"),
-    // new_password: Joi.string().min(5).required().label("New Password"),
-    // old_password: Joi.string().min(5).required().label("Old Password"),
     description: Joi.string().min(5).required().label("Description"),
     price: Joi.number().greater(0).required().label("Price"),
     max_people_limit: Joi.number()
@@ -116,26 +115,6 @@ export default function Profile() {
       .greater(0)
       .required()
       .label("Delivery Radius"),
-  };
-
-  const validateProperty = (name, value, Schema) => {
-    const obj = { [name]: value };
-    const schema = {
-      [name]: Schema[name],
-    };
-    const { error } = Joi.validate(obj, schema);
-    return error ? error.details[0].message : null;
-  };
-
-  const validate = () => {
-    const options = { abortEarly: false };
-    let errors = {};
-    const result = Joi.validate(vendorData, vendorSchema, options);
-    if (!result.error) return null;
-    for (let item of result.error.details) {
-      errors[item.path] = item.message;
-    }
-    return errors;
   };
 
   const handleChange = ({ target }) => {
@@ -184,7 +163,7 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let errors = validate();
+    let errors = validate(vendorData, vendorSchema);
     if (!errors && foodType.length < 1) {
       errors = {
         food_type: "Choose at least one Food Type",
