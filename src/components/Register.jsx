@@ -284,6 +284,17 @@ const Register = ({
             {renderInput("text", "description", "Description")}
           </Grid>
 
+          {pathname === "/profile" && (
+            <>
+              <Grid item xs={12} sm={6}>
+                {renderInput("password", "old_password", "Old Password")}
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                {renderInput("password", "new_password", "New Password")}
+              </Grid>
+            </>
+          )}
+
           <Grid item xs={12} sm={6}>
             {renderInput("text", "website", "Website")}
           </Grid>

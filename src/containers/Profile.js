@@ -28,6 +28,8 @@ export default function Profile() {
     delivery_radius: "",
     is_delivering: "",
     dine_in_options: "",
+    new_password: "",
+    old_password: "",
   });
   const [foodType, setFoodType] = useState([]);
   const [image, setImage] = useState(null);
@@ -67,6 +69,8 @@ export default function Profile() {
       delivery_radius: data.user.delivery_radius,
       is_delivering: data.user.is_delivering ? "true" : "false",
       dine_in_options: data.user.dine_in_options ? "true" : "false",
+      new_password: "",
+      old_password: "",
     });
     setFoodType(data.user.food_type);
     setAddress({
@@ -115,6 +119,8 @@ export default function Profile() {
       .greater(0)
       .required()
       .label("Delivery Radius"),
+    new_password: Joi.string().allow("").min(5).label("New Password"),
+    old_password: Joi.string().allow("").min(5).label("Old Password"),
   };
 
   const handleChange = ({ target }) => {
@@ -191,6 +197,10 @@ export default function Profile() {
     Object.keys(body).forEach((item) => {
       fd.append(item, body[item]);
     });
+    // // old_password: "1234567",
+    // // new_password: "123456",
+    // fd.append("old_password", "123456");
+    // fd.append("new_password", "123456");
 
     Object.keys(localAddress).forEach((item) => {
       fd.append(`address.${item}`, localAddress[item]);

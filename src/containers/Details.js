@@ -41,7 +41,7 @@ export default function Details() {
     comment: "",
   });
   const [errors, setErrors] = useState({});
-  const [ratingValue, setRatingValue] = useState(1);
+  const [ratingValue, setRatingValue] = useState(5);
 
   const { id } = useParams();
 
@@ -66,7 +66,7 @@ export default function Details() {
       comment: "",
     });
     setErrors({});
-    setRatingValue(1);
+    setRatingValue(5);
   };
 
   // Getting vendor according to params id on mounting

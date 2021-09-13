@@ -20,7 +20,7 @@ import AnchorLink from "react-anchor-link-smooth-scroll";
 // Styles
 const useStyles = makeStyles((theme) => ({
   container: { position: "relative" },
-  header: { position: "absolute", top: 0, zIndex: 1000, width: "100%" },
+  header: { position: "absolute", top: 0, zIndex: 1, width: "100%" },
   footNoteBtn: { marginLeft: "10px", color: "lightBlue", cursor: "pointer" },
   footNote: {
     position: "fixed",
