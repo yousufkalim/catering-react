@@ -71,6 +71,7 @@ const Listing = ({
         spacing={0}
         className={classes.cateringArea}
         id="caterersList"
+        style={matches ? { height: "auto" } : {}}
       >
         {matches && (
           <Grid
