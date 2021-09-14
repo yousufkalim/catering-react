@@ -18,7 +18,7 @@ const useStyles = makeStyles({
     zIndex: 5,
     top: "calc(50% - 15px)",
     width: 30,
-    height: 30,
+    height: 50,
     cursor: "pointer",
     background: "none",
     border: "none",
@@ -43,15 +43,14 @@ const Slider = ({ name, home, details }) => {
     <div className={classes.container}>
       <Carousel
         infiniteLoop
-        emulateTouch
-        swipeable
-        dynamicHeight
-        stopOnHover
+        swipeable={false}
+        dynamicHeight={false}
+        stopOnHover={false}
         autoPlay
         showThumbs={false}
         showStatus={false}
         showIndicators={false}
-        transitionTime={1000}
+        transitionTime={800}
         renderArrowPrev={(onClickHandler, hasPrev, label) =>
           hasPrev && (
             <button
