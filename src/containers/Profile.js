@@ -10,6 +10,7 @@ import Header from "../components/Header";
 import Register from "../components/Register.jsx";
 import Api from "../api/index";
 import { validate, validateProperty } from "../utils/joiFunctions";
+import { Helmet } from "react-helmet";
 
 // Home Component
 export default function Profile() {
@@ -255,6 +256,18 @@ export default function Profile() {
 
   return (
     <div>
+      <Helmet>
+        <title>Update Vendors</title>
+        <meta
+          name="description"
+          content="H-Catering is a website to help the Muslims in DMV to find the best catering option for their upcoming event easily !We help muslim business owners to promote their business."
+        />
+        <meta
+          name="keywords"
+          content="Vendors, Vendors Update Form, Update Form, Vendors Profile"
+        />
+      </Helmet>
+
       <Header />
       <Register
         data={vendorData}
