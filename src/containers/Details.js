@@ -17,6 +17,7 @@ import MenuModal from "../components/MenuModal";
 import ReviewModal from "../components/ReviewModal";
 import AddReviewModal from "../components/AddReviewModal";
 import { validate, validateProperty } from "../utils/joiFunctions";
+import { Helmet } from "react-helmet";
 
 // styles
 const useStyles = makeStyles({
@@ -139,6 +140,11 @@ export default function Details() {
 
   return (
     <div className={classes.container}>
+      <Helmet>
+        <title>{vendor.company_name}</title>
+        <meta name="description" content={vendor.description} />
+        <meta name="keywords" content={`Vendor, ${vendor.company_name}`} />
+      </Helmet>
       <div className={classes.header}>
         <Header />
       </div>

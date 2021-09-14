@@ -9,6 +9,7 @@ import LoginForm from "../components/LoginForm";
 import { toast } from "react-toastify";
 import Api from "../api/index";
 import { UpdateStore } from "../StoreContext";
+import { Helmet } from "react-helmet";
 
 // styles
 const useStyles = makeStyles({
@@ -58,6 +59,15 @@ export default function Login() {
 
   return (
     <div className={classes.container}>
+      <Helmet>
+        <title>Vendors Login</title>
+        <meta
+          name="description"
+          content="H-Catering is a website to help the Muslims in DMV to find the best catering option for their upcoming event easily !We help muslim business owners to promote their business."
+        />
+        <meta name="keywords" content="Vendors, Vendors Login Form, Login" />
+      </Helmet>
+
       <div className={classes.header}>
         <Header />
       </div>

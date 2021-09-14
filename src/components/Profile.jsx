@@ -121,6 +121,7 @@ const useStyles = makeStyles((theme) => ({
     marginTop: "25px",
     borderRadius: "10px",
     maxWidth: "500px",
+    maxHeight: "500px",
     cursor: "pointer",
   },
 }));
