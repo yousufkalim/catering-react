@@ -6,7 +6,7 @@ const MenuModal = ({ menu }) => {
   return (
     <div
       style={{
-        maxHeight: "500px",
+        maxHeight: "90vh",
         maxWidth: "500px",
         display: "flex",
         justifyContent: "center",

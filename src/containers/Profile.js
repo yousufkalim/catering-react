@@ -197,10 +197,6 @@ export default function Profile() {
     Object.keys(body).forEach((item) => {
       fd.append(item, body[item]);
     });
-    // // old_password: "1234567",
-    // // new_password: "123456",
-    // fd.append("old_password", "123456");
-    // fd.append("new_password", "123456");
 
     Object.keys(localAddress).forEach((item) => {
       fd.append(`address.${item}`, localAddress[item]);
