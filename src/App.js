@@ -1,5 +1,6 @@
 // Init
 import React, { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 import { ToastContainer, Flip } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -12,10 +13,12 @@ import { UpdateStore } from "./StoreContext";
 // Component
 function App() {
   const updateStore = UpdateStore();
+  const { pathname } = useLocation();
 
   useEffect(() => {
     checkingAuth();
-  }, []);
+    window.scrollTo(0, 0);
+  }, [pathname]);
 
   const checkingAuth = async () => {
     const { data } = await Api("get", "/api/vendors/check-auth");
