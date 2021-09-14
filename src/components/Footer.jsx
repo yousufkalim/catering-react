@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
 
-const useStyles = makeStyles({
+const useStyles = makeStyles((theme) => ({
   container: {
     backgroundColor: "black",
     color: "white",
@@ -14,7 +14,16 @@ const useStyles = makeStyles({
   tagline: { textAlign: "center", marginTop: "20px" },
   copyright: { marginTop: "5px", textAlign: "center" },
   heart: { color: "red", transform: "translateY(7px)" },
-});
+  falconLink: {
+    color: "white",
+    textDecoration: "none",
+    transitionDuration: "0.5s",
+    transitionProperty: "color",
+    "&:hover": {
+      color: theme.palette.primary.main,
+    },
+  },
+}));
 
 const Footer = () => {
   const classes = useStyles();
@@ -35,7 +44,11 @@ const Footer = () => {
       </Typography>
 
       <Typography variant="body1" className={classes.copyright}>
-        &#169; 2021 - Falcon IT Consulting.
+        &#169; 2021 -
+        <a href="https://falconconsulting.fr/" className={classes.falconLink}>
+          {" "}
+          Falcon IT Consulting.
+        </a>
       </Typography>
     </div>
   );

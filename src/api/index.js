@@ -20,7 +20,7 @@ const api = async (method = "get", uri, body) => {
         if (err?.response?.status === 403) {
           // window.location = "/login";
         } else {
-          console.log("API Error --------> ", err.response.status);
+          console.log("API Error --------> ", err?.response?.status);
           if (err?.response?.status !== 401) {
             toast.error(err?.response?.data ? err.response.data : err?.message);
           }
