@@ -9,6 +9,7 @@ import {
   PrevIcon,
   HeroImg,
 } from "../assets/images";
+import { useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles({
   img: { width: "100%", height: "80vh", objectFit: "cover" },
@@ -38,6 +39,7 @@ const useStyles = makeStyles({
 
 const Slider = ({ name, home, details }) => {
   const classes = useStyles();
+  const matches = useMediaQuery("(max-width:960px)");
 
   return (
     <div className={classes.container}>
@@ -58,7 +60,7 @@ const Slider = ({ name, home, details }) => {
               onClick={onClickHandler}
               title={label}
               className={classes.arrows}
-              style={home ? { display: "none" } : { left: 15 }}
+              style={home || matches ? { display: "none" } : { left: 15 }}
             >
               <img
                 src={PrevIcon}
@@ -76,7 +78,7 @@ const Slider = ({ name, home, details }) => {
               onClick={onClickHandler}
               title={label}
               className={classes.arrows}
-              style={home ? { display: "none" } : { right: 15 }}
+              style={home || matches ? { display: "none" } : { right: 15 }}
             >
               <img
                 src={NextIcon}
