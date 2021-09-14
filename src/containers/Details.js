@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { makeStyles } from "@material-ui/core/styles";
-import { Typography } from "@material-ui/core";
+import { Typography, useMediaQuery } from "@material-ui/core";
 import Joi from "joi-browser";
 import publicIp from "public-ip";
 
@@ -43,6 +43,7 @@ export default function Details() {
   });
   const [errors, setErrors] = useState({});
   const [ratingValue, setRatingValue] = useState(5);
+  const matches = useMediaQuery("(max-width:960px)");
 
   const { id } = useParams();
 
@@ -151,7 +152,7 @@ export default function Details() {
       <div className={classes.slider}>
         <Slider
           details={
-            <Typography variant="h3" id="text-animation">
+            <Typography variant={!matches ? "h3" : "h4"} id="text-animation">
               <b>{vendor.company_name?.toUpperCase()}</b>
             </Typography>
           }

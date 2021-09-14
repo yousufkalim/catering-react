@@ -127,13 +127,15 @@ const Header = () => {
         </Hidden>
         <Hidden mdUp>
           <div>
-            <Button
-              aria-controls="simple-menu"
-              aria-haspopup="true"
-              onClick={handleClick}
-            >
-              <MenuIcon style={{ color: "white" }} />
-            </Button>
+            {((!userExists && pathname === "/") || userExists) && (
+              <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+              >
+                <MenuIcon style={{ color: "white" }} />
+              </Button>
+            )}
             <Menu
               id="simple-menu"
               anchorEl={menu}

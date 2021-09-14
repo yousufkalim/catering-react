@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     maxWidth: "400px",
-    width: "400px",
+    width: "90vw",
   },
   heading: { marginBottom: "20px", color: theme.palette.primary.dark },
   submit: {

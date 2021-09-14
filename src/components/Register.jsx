@@ -12,6 +12,7 @@ import TextField from "@material-ui/core/TextField";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Grid from "@material-ui/core/Grid";
 import BackupIcon from "@material-ui/icons/Backup";
+import { useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   main: {
@@ -20,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     marginTop: "30px",
   },
-  heading: { color: theme.palette.primary.dark },
+  heading: { color: theme.palette.primary.dark, textAlign: "center" },
   caption: { textAlign: "center", marginTop: "20px" },
   form: {
     marginTop: "30px",
@@ -120,6 +121,7 @@ const Register = ({
 }) => {
   const classes = useStyles();
   const { pathname } = useLocation();
+  const matches = useMediaQuery("(max-width:960px)");
 
   const renderInput = (type, name, placeholder, label = "") => {
     return (
@@ -225,7 +227,7 @@ const Register = ({
         Please join our network, and get leads for catering opportunities.
         <br /> We will promote your business to the muslim community.
       </Typography>
-      <div className={classes.form}>
+      <div className={classes.form} style={matches ? { maxWidth: "80vw" } : {}}>
         {/* Grid for input fields */}
         <Grid container spacing={1} style={{ marginBottom: "20px" }}>
           <Grid item xs={12} sm={6}>

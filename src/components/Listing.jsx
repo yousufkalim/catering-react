@@ -83,6 +83,7 @@ const Listing = ({
             <Map
               center={[center.lat, center.lng]}
               zoom={12}
+              dragging={false}
               scrollWheelZoom={false}
             >
               <TileLayer
