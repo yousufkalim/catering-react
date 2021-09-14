@@ -14,7 +14,7 @@ import Api from "../api/index";
 import { UpdateStore, Store } from "../StoreContext";
 import TransitionsModal from "../components/TransitionsModal";
 import LocationMdoal from "../components/LocationModal";
-import { Button } from "@material-ui/core";
+import { Button, useMediaQuery } from "@material-ui/core";
 import AnchorLink from "react-anchor-link-smooth-scroll";
 
 // Styles
@@ -73,6 +73,7 @@ export default function Home() {
   const updateStore = UpdateStore();
   const { vendors: allVendors } = Store();
   // const placesApiKey = process.env.REACT_APP_GOOGLE_PLACES_KEY;
+  const matches = useMediaQuery("(max-width:960px)");
 
   useEffect(() => {
     getUserLocation();
@@ -271,12 +272,15 @@ export default function Home() {
   // Function for rendering the content on slider
   const renderSliderContent = () => {
     return (
-      <div style={{ textAlign: "center" }} id="text-animation">
-        <Typography variant="h2">
+      <div style={{ textAlign: "center", padding: "20px" }} id="text-animation">
+        <Typography variant={!matches ? "h2" : "h3"}>
           <b>Find your caterer easily</b>
         </Typography>
 
-        <Typography variant="h5" className={classes.subtitle}>
+        <Typography
+          variant={!matches ? "h5" : "h6"}
+          className={classes.subtitle}
+        >
           <em>Listing of the Halal vendors in your area</em>
         </Typography>
 

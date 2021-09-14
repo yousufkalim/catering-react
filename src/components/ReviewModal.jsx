@@ -11,7 +11,7 @@ import StarBorderIcon from "@material-ui/icons/StarBorder";
 const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "450px",
-    width: "450px",
+    // width: "450px",
   },
   heading: { color: theme.palette.primary.dark, fontFamily: "TektonPro" },
   headingDiv: {

@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import FavoriteIcon from "@material-ui/icons/Favorite";
+import { useMediaQuery } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -27,8 +28,13 @@ const useStyles = makeStyles((theme) => ({
 
 const Footer = () => {
   const classes = useStyles();
+  const matches = useMediaQuery("(max-width:960px)");
+
   return (
-    <div className={classes.container}>
+    <div
+      className={classes.container}
+      style={matches ? { textAlign: "center" } : {}}
+    >
       <Typography variant="h5">
         <b>Who we are?</b>
       </Typography>

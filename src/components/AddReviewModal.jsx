@@ -9,7 +9,7 @@ import TextField from "@material-ui/core/TextField";
 const useStyles = makeStyles((theme) => ({
   container: {
     maxWidth: "450px",
-    width: "450px",
+    // width: "450px",
   },
   ratingDiv: { display: "flex", justifyContent: "center" },
   btn: {

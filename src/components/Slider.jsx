@@ -24,7 +24,7 @@ const useStyles = makeStyles({
     border: "none",
   },
   headingDiv: {
-    backgroundColor: "rgba(0,0,0,0.5)",
+    backgroundColor: "rgba(0,0,0,0.6)",
     width: "100%",
     height: "100%",
     position: "absolute",
