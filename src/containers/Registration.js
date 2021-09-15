@@ -184,16 +184,6 @@ export default function Registration() {
 
   // Getting All Addresses function
   const handleGetAddress = async ({ target }) => {
-    // delete axios.defaults.headers.common["x-auth-token"];
-    // const { data } = await axios.get(
-    //   `https://maps.googleapis.com/maps/api/place/findplacefromtext/json?input=${target.value}&inputtype=textquery&fields=formatted_address,name,geometry&key=${placesApiKey}`
-    // );
-    // axios.defaults.headers.common["x-auth-token"] = localStorage.setItem(
-    //   "token",
-    //   localStorage.getItem("token")
-    // );
-    // setAllAddresses(data.candidates);
-
     const { data } = await Api("get", `/api/places?name=${target.value}`);
     setAllAddresses(data.places);
   };
@@ -202,11 +192,11 @@ export default function Registration() {
   const handleAddressChange = async ({ target }) => {
     if (target.textContent) {
       const index = allAddresses.findIndex(
-        (a) => a.formatted_address === target.textContent
+        (a) => a.name === target.textContent
       );
       setAddressValue(allAddresses[index]);
       setAddress({
-        label: allAddresses[index].formatted_address,
+        label: allAddresses[index].name,
         lat: allAddresses[index].geometry?.location?.lat,
         lng: allAddresses[index].geometry?.location?.lng,
       });

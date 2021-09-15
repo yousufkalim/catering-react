@@ -26,7 +26,7 @@ const LocationMdoal = ({
       <Autocomplete
         id="combo-box-demo"
         options={allAddresses}
-        getOptionLabel={(option) => option.formatted_address}
+        getOptionLabel={(option) => option.name}
         onChange={(e) => handleAddressChange(e)}
         renderInput={(params) => (
           <TextField
