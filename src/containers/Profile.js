@@ -80,7 +80,7 @@ export default function Profile() {
       lng: data.user.address.lng,
     });
     setAddressValue({
-      formatted_address: data.user.address.label,
+      name: data.user.address.label,
       geometry: {
         location: {
           lat: data.user.address.lat,
@@ -235,11 +235,11 @@ export default function Profile() {
   const handleAddressChange = async ({ target }) => {
     if (target.textContent) {
       const index = allAddresses.findIndex(
-        (a) => a.formatted_address === target.textContent
+        (a) => a.name === target.textContent
       );
       setAddressValue(allAddresses[index]);
       setAddress({
-        label: allAddresses[index].formatted_address,
+        label: allAddresses[index].name,
         lat: allAddresses[index].geometry?.location?.lat,
         lng: allAddresses[index].geometry?.location?.lng,
       });

@@ -242,7 +242,7 @@ const Register = ({
               }
               id="combo-box-demo"
               options={addresses}
-              getOptionLabel={(option) => option.formatted_address}
+              getOptionLabel={(option) => option.name}
               classes={{ root: classes.autoComplete }}
               onChange={(e) => handleAddressChange(e)}
               renderInput={(params) => (
