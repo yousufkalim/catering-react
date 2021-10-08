@@ -170,16 +170,16 @@ export default function Profile() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    let errors = validate(vendorData, vendorSchema);
-    if (!errors && foodType.length < 1) {
-      errors = {
-        food_type: "Choose at least one Food Type",
-      };
-      setErrors(errors);
-    } else {
-      setErrors(errors || {});
-    }
-    if (errors) return;
+    // let errors = validate(vendorData, vendorSchema);
+    // if (!errors && foodType.length < 1) {
+    //   errors = {
+    //     food_type: "Choose at least one Food Type",
+    //   };
+    //   setErrors(errors);
+    // } else {
+    //   setErrors(errors || {});
+    // }
+    // if (errors) return;
 
     await Api("put", `/api/vendors/${userId}`, mapToFormData(vendorData));
     toast.success("Vendor Updated");
