@@ -196,7 +196,11 @@ export default function Profile() {
     };
 
     Object.keys(body).forEach((item) => {
-      fd.append(item, body[item]);
+      if (!body[item]) {
+        delete body[item];
+      } else {
+        fd.append(item, body[item]);
+      }
     });
 
     Object.keys(localAddress).forEach((item) => {
